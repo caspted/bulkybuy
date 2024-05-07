@@ -8,5 +8,8 @@
     "start": "concurrently --kill-others \"cd frontend && npm run dev\" \"cd backend && npm run dev\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
