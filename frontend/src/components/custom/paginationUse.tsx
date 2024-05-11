@@ -43,7 +43,7 @@ export function PaginationUse({ pages, currentPage }: PaginationUseProps) {
         </PaginationItem>
         {currentPageAt < pages &&
           <PaginationItem>
-            <PaginationNext href={`auctions/${currentPageAt + 1}`} />
+            <PaginationNext href={`/auctions/${currentPageAt + 1}`} />
           </PaginationItem>
         }
       </PaginationContent>
