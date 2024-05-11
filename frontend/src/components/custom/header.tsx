@@ -2,10 +2,13 @@
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
 
-
 export default function Header() {
   const pathname = usePathname()
   const firstPathSegment = pathname.split('/')[1]
+
+  if (firstPathSegment === "login" || firstPathSegment === "register") {
+    return null
+  }
 
   return (
     <header className="flex items-center w-full h-20 gap-4 bg-white border border-b-1 p-4">
