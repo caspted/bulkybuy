@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import routes from "./routes";
 import auctionsRoutes from "./routes/auctions";
+import authRoutes from "./routes/auth";
 import bidsRoutes from "./routes/bids";
 import certificatesRoutes from "./routes/certificates";
 import usersRoutes from "./routes/users";
@@ -18,6 +19,7 @@ async function startServer() {
     .use(cors())
     .use(express.json());
   auctionsRoutes(app);
+  authRoutes(app);
   bidsRoutes(app);
   certificatesRoutes(app);
   usersRoutes(app);

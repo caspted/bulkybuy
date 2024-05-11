@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import isValidEmail from "@/utils/isValidEmail";
+import { login } from "@/utils/authApi";
 
 interface LoginCardProps {
   router : AppRouterInstance
@@ -25,23 +27,10 @@ export default function LoginCard({ router } : LoginCardProps) {
   const [displayEnterPassword, setDisplayEnterPassword] = useState<boolean>(false)
   const [incorrectCridentials, setIncorrectCridentials] = useState<boolean>(false)
 
-  function isValidEmail() {
-    const atIndex = email.indexOf('@');
-    const dotIndex = email.lastIndexOf('.')
-
-    if (atIndex && dotIndex) {
-      if (dotIndex > atIndex) {
-        return true
-      }
-    }
-
-    return false
-  }
-
   async function handleSubmit() {
     let valid = true
 
-    if (!isValidEmail()) {
+    if (!isValidEmail(email)) {
       setDisplayEmailInvalid(true)
       valid = false
     } else {
@@ -60,26 +49,12 @@ export default function LoginCard({ router } : LoginCardProps) {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
-
-      if (!response.ok || response.status === 401) {
-        setIncorrectCridentials(true)
-      } else {
-        const responseBody = await response.json()
-        localStorage.setItem('token', responseBody.body.token)
-        router.push("/home")
-      }
+      const token = await login(email, password);
+      localStorage.setItem('token', token);
+      router.push('/');
     } catch (error) {
-      console.log(error);
+      setIncorrectCridentials(true);
+      console.error('Error logging in:', error);
     }
   }
 
