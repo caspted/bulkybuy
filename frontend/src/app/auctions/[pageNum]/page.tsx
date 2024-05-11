@@ -4,7 +4,7 @@ import { PaginationUse } from "@/components/custom/paginationUse";
 
 interface AuctionsProps {
   params: {
-    id: string;
+    pageNum: string;
   };
 }
 
@@ -23,7 +23,7 @@ export default function Auctions({ params } : AuctionsProps) {
             />
           ))}
         </BentoGrid>
-        <PaginationUse pages={5} currentPage={Number(params.id)}/>
+        <PaginationUse pages={5} currentPage={Number(params.pageNum)}/>
       </section>
     </main>
   );
