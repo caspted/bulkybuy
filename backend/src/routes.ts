@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();
 
+// Outdated but still kept for time being
 function routes(app: Express) {
   //User Api Routes
   app.get("/api/user", async (req: Request, res: Response) => {
