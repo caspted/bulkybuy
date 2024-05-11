@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google"
+import Header from "@/components/custom/header";
 
 import { cn } from "@/lib/utils"
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}>
+          <Header />
           {children}
         </body>
     </html>

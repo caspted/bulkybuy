@@ -1,17 +1,16 @@
 import React from "react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import { PaginationUse } from "@/components/custom/paginationUse";
 
-export default function Home() {
+interface AuctionsProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function Auctions({ params } : AuctionsProps) {
   return (
     <main className="flex flex-col min-h-screen items-center bg-dot-black/[0.2] p-24 pt-16">
-      <div className="flex flex-col px-16 w-4/5">
-        <TypewriterEffectSmooth words={words} className="mx-auto"/>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, eos deserunt iusto accusamus beatae consequatur harum numquam soluta sapiente autem veritatis incidunt eveniet eligendi voluptates adipisci, error possimus, totam odio.
-        </p>
-      </div>
       <section className="mt-8">
         <BentoGrid className="max-w-4xl mx-auto">
           {items.map((item, i) => (
@@ -24,7 +23,7 @@ export default function Home() {
             />
           ))}
         </BentoGrid>
-        <PaginationUse pages={5} currentPage={2}/>
+        <PaginationUse pages={5} currentPage={Number(params.id)}/>
       </section>
     </main>
   );
@@ -71,20 +70,4 @@ const items = [
     description: "Embark on exciting journeys and thrilling discoveries.",
     header: <Skeleton />,
   },
-];
-
-const words = [
-  {
-    text: "Bulk",
-  },
-  {
-    text: "Buy",
-  },
-  {
-    text: "with",
-  },
-  {
-    text: "BulkyBuy.",
-    className: "text-blue-500 dark:text-blue-500",
-  },
-];
+]
