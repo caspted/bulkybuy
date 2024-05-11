@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import isValidEmail from "@/utils/isValidEmail";
+import { register } from "@/utils/authApi";
 
 interface RegisterCardProps {
   router: AppRouterInstance
@@ -26,25 +28,10 @@ export default function RegisterCard({ router } : RegisterCardProps) {
   const [displayEnterUsername, setDisplayEnterUsername] = useState<boolean>(false)
   const [displayEmailInUse, setDisplayEmailInUse] = useState<boolean>(false)
 
-  function isValidEmail() {
-    const atIndex = email.indexOf('@');
-    const dotIndex = email.lastIndexOf('.')
-
-    if (atIndex && dotIndex) {
-      if (dotIndex > atIndex) {
-        return true
-      }
-    }
-
-    return false
-  }
-
-
-
   async function handleSubmit() {
     let valid = true
 
-    if (!isValidEmail()) {
+    if (!isValidEmail(email)) {
       setDisplayEmailInvalid(true)
       valid = false
     } else {
@@ -70,28 +57,15 @@ export default function RegisterCard({ router } : RegisterCardProps) {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/register`, {
-        method: 'POST',      
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userName: username,
-          email: email,
-          password: password
-        })
-      })
-      console.log(response)
-
-      if (response.status === 409) {
-        setDisplayEmailInUse(true)
-      } else if (response.ok && response.status === 201) {
-        const responseBody = await response.json()
-        localStorage.setItem('token', responseBody.body.token)
-        router.push("/home")
-      }
+      const token = await register(username, email, password);
+      localStorage.setItem('token', token);
+      router.push('/');
     } catch (error) {
-      console.log(error);
+      if ((error as Error).message === 'Email already in use') {
+        setDisplayEmailInUse(true);
+      } else {
+        console.error('Error registering:', error);
+      }
     }
   }
 
