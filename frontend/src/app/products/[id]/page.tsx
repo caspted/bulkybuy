@@ -1,9 +1,7 @@
 "use client"
 
 import React, {useState} from "react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { CategorySelection } from "@/components/custom/categorySelection";
 
 export default function Products() {
   const [name, setName] = useState("")
@@ -15,7 +13,6 @@ export default function Products() {
         <h3 className="text-2xl font-bold">
           Product
         </h3>
-
       </div>
     </main>
   );

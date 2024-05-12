@@ -52,6 +52,17 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "listed_at",
+    header: () => <div className="text-right">listed at</div>,
+    cell: ({ row }) => {
+      const listed_at : string = row.getValue("listed_at")
+      const date = listed_at.toLocaleString()
+      console.log(date)
+
+      return <div className="text-right font-medium"> {date} </div>
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {

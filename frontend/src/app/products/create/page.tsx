@@ -11,9 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { CategorySelection } from "@/components/custom/categorySelection";
+import createProduct from "@/utils/createProduct";
 
 export default function Products() {
   const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [category, setCategory] = useState("")
 
   return (
     <main className="flex flex-col items-center bg-dot-black/[0.2] p-24 pt-16"
@@ -41,14 +45,18 @@ export default function Products() {
                     id="email"
                     placeholder="Product Description"
                     className="focus-visible:ring-grey-400"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="email">Category</Label>
+                  <CategorySelection setCategory={setCategory}/>
                 </div>
               </div>
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button className="w-full bg-black" onClick={() => console.log("hehe")}>
+            <Button className="w-full bg-black" onClick={() => createProduct(name, description, category)}>
               Create
             </Button>
           </CardFooter>
