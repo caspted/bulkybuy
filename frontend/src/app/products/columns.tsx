@@ -52,6 +52,17 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "listed_at",
+    header: () => <div className="text-right">listed at</div>,
+    cell: ({ row }) => {
+      const listed_at : string = row.getValue("listed_at")
+      const date = listed_at.toLocaleString()
+      console.log(date)
+
+      return <div className="text-right font-medium"> {date} </div>
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
@@ -67,14 +78,14 @@ export const columns: ColumnDef<Product>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(String(payment.id))}
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
