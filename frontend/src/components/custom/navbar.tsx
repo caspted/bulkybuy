@@ -3,7 +3,7 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { Button } from "../ui/button"
-import getUserInfo from "@/utils/getUserInfo"
+import fetchUser from "@/utils/fetchUser"
 import { useEffect, useState } from "react"
 
 export default function Navbar() {
@@ -13,18 +13,23 @@ export default function Navbar() {
   const [username, setUsername] = useState("")
 
   useEffect(() => {
-    const token = localStorage.getItem('token') || null
+    async function getUserName() {
+      const token = localStorage.getItem('token') || null
     
-    if (token) {
-      const userInfo = getUserInfo()
-    } else {
-      router.push("/login")
+      if (token) {
+        const user = await fetchUser()
+        setUsername(user.name)
+      } else {
+        router.push("/login")
+      }
     }
+
+    getUserName()
   }, [])
 
   function logout() {
     localStorage.clear()
-    router.push('/')
+    router.push('/login')
   }
 
   if (firstPathSegment === "login" || firstPathSegment === "register") {
@@ -56,8 +61,9 @@ export default function Navbar() {
           </p>
         </Link>
       </div>
-      <div>
-        <Button> Logout </Button>
+      <div className="flex gap-4 items-center">
+        {username !== "" && <p> Hello {username} </p>}
+        <Button onClick={() => logout()}> Logout </Button>
       </div>
     </header>
   )
