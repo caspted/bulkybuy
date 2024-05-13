@@ -8,6 +8,7 @@ import certificatesRoutes from "./routes/certificates";
 import usersRoutes from "./routes/users";
 import walletsRoutes from "./routes/wallets";
 import productRoutes from "./routes/products";
+import imageUploadRoutes from "./routes/imageUpload";
 
 import * as dotenv from "dotenv";
 
@@ -26,6 +27,7 @@ async function startServer() {
   usersRoutes(app);
   walletsRoutes(app);
   productRoutes(app);
+  imageUploadRoutes(app)
 
   app.listen(8080, () => {
     console.log("Server has started at PORT 8080");
