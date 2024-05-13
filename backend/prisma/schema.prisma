@@ -14,7 +14,7 @@ model User {
   password        String
   date_registered DateTime       @default(now())
   wallet          Wallet?
-  model           Certificate[]
+  certificate     Certificate[]
   bids            Bid[]
   products        Product[]
 }

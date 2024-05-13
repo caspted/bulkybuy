@@ -13,6 +13,20 @@ function productRoutes(app: Express) {
     }
   });
 
+  app.get("/api/products/seller/:id", async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const product = await prisma.product.findMany({
+        where: { sellerId: parseInt(id) },
+      });
+      console.log(product)
+      if (!product) return res.status(404).json({ message: "Product not found" });
+      res.status(200).json(product);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
   app.get("/api/products/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

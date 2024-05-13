@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { useState, useEffect } from "react"
 import {
-  ColumnDef,
   ColumnFiltersState,
   SortingState,
   VisibilityState,
@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
@@ -32,50 +32,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { columns } from "./columns"
+import getOwnProducts from "@/utils/getOwnProducts"
 import { Product } from "@/utils/types"
-
-const data: Product[] = [
-  {
-    id: 5,
-    name: "burger",
-    category: "food",
-    description: "hungry",
-    image_url: "",
-    listed_at: new Date("2024-05-11T08:00:00Z")
-  },
-  {
-    id: 8,
-    name: "fries",
-    category: "food",
-    description: "hungry",
-    image_url: "",
-    listed_at: new Date("2024-05-11T08:00:00Z")
-  },
-  {
-    id: 9,
-    name: "sandwich",
-    category: "food",
-    description: "hungry",
-    image_url: "",
-    listed_at: new Date("2024-05-11T08:00:00Z")
-  },
-  {
-    id: 13,
-    name: "ham",
-    category: "food",
-    description: "hungry",
-    image_url: "",
-    listed_at: new Date("2024-05-11T08:00:00Z")
-  },
-  {
-    id: 15,
-    name: "coke",
-    category: "food",
-    description: "hungry",
-    image_url: "",
-    listed_at: new Date("2024-05-11T08:00:00Z")
-  },
-]
 
 export function DataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -85,7 +43,16 @@ export function DataTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [data, setData] = useState<Array<Product>>([])
   const router = useRouter()
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const products = await getOwnProducts()
+      setData(products)
+    }
+    fetchProducts()
+  }, [])
 
   const table = useReactTable({
     data,
