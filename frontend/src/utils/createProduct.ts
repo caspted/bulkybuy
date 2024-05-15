@@ -1,9 +1,26 @@
 import getUserInfo from "./getUserInfo";
+import axios from "axios";
 
-export default async function createProduct (name : string, description : string, category : string, imageUrl? : string) {
+export default async function createProduct (name : string, description : string, category : string, image: File | null) {
   const sellerId = getUserInfo().id
+
+  if (!image) {
+    return;
+  }
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`, {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+
+    const imageUrl = response.data.imageName
+
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,13 +34,9 @@ export default async function createProduct (name : string, description : string
       }),
     });
 
-    if (!response.ok) {
+    if (!(response.status >= 200 && response.status < 300)) {
       throw new Error('Failed to create product');
     }
-
-    const data = await response.json();
-    console.log(data)
-    return data;
   } catch (error) {
     console.error('Error creating product:', error);
     throw error;

@@ -1,59 +1,40 @@
 "use client"
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+import { ChangeEvent, useState } from 'react'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
-const FileUpload = () => {
-  const [uploadStatus, setUploadStatus] = useState<string>('');
+export default function NewPost() {
+  const [file, setFile] = useState<File | null>(null)
+  const [caption, setCaption] = useState("")
+  const router = useRouter()
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-
-      if (!validFileTypes.find(type => type === file.type)) {
-        return;
-      }
-
-      console.log(file)
-
-      const imageForm = new FormData();
-      imageForm.append('image', file);
-
-      console.log(imageForm.get('image'))
-
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/images/1`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            imageForm
-          }),
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setUploadStatus(`Upload successful: ${data.fileUrl}`);
-        } else {
-          setUploadStatus('Upload failed');
-          console.error('Error uploading file:', response.status);
-        }
-      } catch (error) {
-        setUploadStatus('Upload failed');
-        console.error('Error uploading file:', error);
-      }
+  const submit = async (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!file) {
+      return
     }
-  };
+
+    const formData = new FormData();
+    formData.append("image", file)
+    formData.append("caption", caption)
+    await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/images`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+    router.push("/")
+  }
+
+  const fileSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setFile(file)
+    }
+  }
 
   return (
-    <div>
-      <input id="imageInput" type="file" hidden onChange={handleFileChange} className="w-full "/>
-      <label htmlFor="imageInput" className="btn btn-outline btn-blue mb-4">
-        <Button disabled className='cursor-pointer'> Upload </Button>
-      </label>
+    <div className="flex flex-col items-center justify-center">
+      <form onSubmit={submit} style={{ width: 650 }} className="flex flex-col space-y-5 px-5 py-14">
+        <input onChange={fileSelected} type="file" accept="image/*"></input>
+        <input value={caption} onChange={e => setCaption(e.target.value)} type="text" placeholder='Caption'></input>
+        <button type="submit">Submit</button>
+      </form>
     </div>
-  );
-};
-
-export default FileUpload;
+  )
+}

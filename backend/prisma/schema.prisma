@@ -63,7 +63,7 @@ model Product {
   id          Int        @id @default(autoincrement())
   name        String
   description String
-  image_url   String     @default("")
+  image_url   String
   listed_at   DateTime   @default(now())
   category    String
   seller      User       @relation(fields: [sellerId], references: [id])
