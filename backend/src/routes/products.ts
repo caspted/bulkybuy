@@ -1,6 +1,16 @@
 import { Express, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-export const prisma = new PrismaClient();
+import multer from "multer";
+import sharp from "sharp";
+import crypto from "crypto";
+import { uploadFile, deleteFile, getObjectSignedUrl } from "../utils/s3Bucket";
+const prisma = new PrismaClient();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const generateFileName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString("hex");
 
 function productRoutes(app: Express) {
   // Product API Routes
@@ -40,7 +50,7 @@ function productRoutes(app: Express) {
     }
   });
 
-  app.post("/api/products", async (req: Request, res: Response) => {
+  app.post("/api/products", upload.single("image"), async (req: Request, res: Response) => {
     try {
       const { name, description, image_url, category, sellerId } = req.body;
       console.log(image_url)
@@ -54,6 +64,30 @@ function productRoutes(app: Express) {
         },
       });
       res.status(201).json(newProduct);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  app.post("/api/products/image", upload.single("image"), async (req: Request, res: Response) => {
+    const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: 'Image file is required' });
+      }
+  
+      if (req.file.size > MAX_IMAGE_SIZE) {
+        return res.status(413).json({ error: 'Image file is too large' });
+      }
+
+      const imageName = generateFileName();
+      const fileBuffer = await sharp(req.file.buffer)
+        .resize({ height: 1920, width: 1080, fit: 'contain' })
+        .toBuffer();
+  
+      await uploadFile(fileBuffer, imageName, req.file.mimetype);
+  
+      res.status(201).json({imageName});
     } catch {
       res.status(500).json({ error: "Internal Server Error" });
     }

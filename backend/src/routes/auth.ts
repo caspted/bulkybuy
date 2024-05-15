@@ -32,8 +32,6 @@ function authRoutes(app: Express) {
   
   app.post('/api/register', async (req: Request, res: Response) => {
     const { userName, email, password } = req.body;
-
-    console.log("lol")
   
     try {
       const existingUser = await prisma.user.findUnique({ where: { email } });
