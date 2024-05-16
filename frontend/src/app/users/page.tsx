@@ -18,6 +18,14 @@ export default function UserProfile() {
         <CardHeader>
           <CardTitle>Company Name</CardTitle>
         </CardHeader>
+        <CardContent>
+          <div>
+            <h1>Email</h1>
+          </div>
+          <div>
+            <h1>Date_Registered</h1>
+          </div>
+        </CardContent>
       </Card>
     </div>
       </div>
@@ -28,6 +36,14 @@ export default function UserProfile() {
               Wallet Info
             </CardTitle>
           </CardHeader>
+          <CardContent>
+            <div>
+              <h1>Balance: $5500</h1>
+            </div>
+            <div>
+              <h1>Latest Transaction: $1000</h1>
+            </div>
+          </CardContent>
         </Card>
         <Card className="">
           <CardHeader>
