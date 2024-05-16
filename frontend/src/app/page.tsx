@@ -20,7 +20,6 @@ export default function Home() {
               title={item.title}
               description={item.description}
               header={item.header}
-              className={i === 3 || i === 6 ? "md:col-span-2" : ""}
             />
           ))}
         </BentoGrid>
