@@ -20,7 +20,7 @@ export default async function Products({ params }: ProductsProps) {
       style={{ height: "calc(100vh - 100px)" }}>
       <div className="flex flex-col justify-between px-16 w-4/5">
         <div className="row-span-1 rounded-xl hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border justify-between flex flex-col space-y-4">
-          <div className="relative w-full" style={{ paddingTop: '60%' }}> {/* Adjust paddingTop to set the aspect ratio */}
+          <div className="relative w-full" style={{ paddingTop: '60%' }}>
             <Image 
               src={imageUrl.imageUrl} 
               alt="Image from URL" 
