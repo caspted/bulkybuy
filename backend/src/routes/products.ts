@@ -69,7 +69,6 @@ function productRoutes(app: Express) {
 
       const imageName = generateFileName();
       const fileBuffer = await sharp(req.file.buffer)
-        .resize({ height: 1920, width: 1080, fit: 'contain' })
         .toBuffer();
   
       await uploadFile(fileBuffer, imageName, req.file.mimetype);

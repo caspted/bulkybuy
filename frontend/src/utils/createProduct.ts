@@ -30,7 +30,7 @@ export default async function createProduct (name : string, description : string
         description,
         category,
         sellerId,
-        image_url: imageUrl ? "" : imageUrl,
+        image_url: imageUrl,
       }),
     });
 
