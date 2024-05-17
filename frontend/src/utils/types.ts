@@ -13,4 +13,5 @@ export type Product = {
   image_url: string;
   listed_at: Date;
   category: string;
+  sold: boolean
 }

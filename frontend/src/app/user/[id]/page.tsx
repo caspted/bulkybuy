@@ -34,6 +34,19 @@ export default function UserProfile() {
     }
 }
 
+  const getProducts = async (userId: string) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/user/${userId}/products`)
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      const data = await response.json()
+      setProduct(data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="flex flex-row space-x-4 mx-4">
       <div className="flex w-1/3 mt-8 ">
@@ -86,40 +99,19 @@ export default function UserProfile() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead>Image</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>Apple Inc.</TableCell>
-                  <TableCell>All new M4 chip</TableCell>
-                  <TableCell>Iphone 15</TableCell>
-                  <TableCell>Gadgets</TableCell>
-                  <TableCell>Sold</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Ikea</TableCell>
-                  <TableCell>Real leather found in the Swiss</TableCell>
-                  <TableCell>Green Leather Sofa</TableCell>
-                  <TableCell>Furniture</TableCell>
-                  <TableCell>Not Sold</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Rice Mill Corporation</TableCell>
-                  <TableCell>Premium jasmine rice</TableCell>
-                  <TableCell>500 sacks of rice</TableCell>
-                  <TableCell>Material</TableCell>
-                  <TableCell>Not Sold</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Steel Warrior Shop</TableCell>
-                  <TableCell>Strongest steels in the east</TableCell>
-                  <TableCell>1K bars of steel</TableCell>
-                  <TableCell>Materials</TableCell>
-                  <TableCell>Sold</TableCell>
-                </TableRow>
+                {product.map(product => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.description}</TableCell>
+                    <TableCell>{product.category}</TableCell>
+                    <TableCell>{product.sold ? 'Sold' : 'Not Sold'}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>
