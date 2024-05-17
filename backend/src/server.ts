@@ -25,7 +25,7 @@ async function startServer() {
   certificatesRoutes(app);
   usersRoutes(app);
   walletsRoutes(app);
-  productRoutes(app);
+  productRoutes(app)
 
   app.listen(8080, () => {
     console.log("Server has started at PORT 8080");

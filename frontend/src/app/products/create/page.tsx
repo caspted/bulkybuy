@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,14 @@ export default function Products() {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
+  const [file, setFile] = useState<File | null>(null)
+
+  const fileSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setFile(file)
+    }
+  }
 
   return (
     <main className="flex flex-col items-center bg-dot-black/[0.2] p-24 pt-16"
@@ -40,23 +48,27 @@ export default function Products() {
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Description</Label>
+                  <Label htmlFor="Product Description">Description</Label>
                   <Input
-                    id="email"
+                    id="Product Description"
                     placeholder="Product Description"
                     className="focus-visible:ring-grey-400"
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Category</Label>
+                  <Label htmlFor="Category">Category</Label>
                   <CategorySelection setCategory={setCategory}/>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="email">Image</Label>
+                  <input onChange={fileSelected} type="file" accept="image/*"></input>
                 </div>
               </div>
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button className="w-full bg-black" onClick={() => createProduct(name, description, category)}>
+            <Button className="w-full bg-black" onClick={() => createProduct(name, description, category, file)}>
               Create
             </Button>
           </CardFooter>

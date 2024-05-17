@@ -16,7 +16,7 @@ export default function Products() {
         </h3>
         <Button onClick={() => router.push("/products/create")}> + Add new </Button>
       </div>
-      <DataTable/>
+      <DataTable />
     </main>
   );
 }
