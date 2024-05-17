@@ -33,6 +33,12 @@ export default function Navbar() {
           Your Products
         </p>
       </Link>
+
+      <Link href="/users/:id">
+        <p className={`${firstPathSegment === "useres" ? " text-black" : "text-gray-400"} `}>
+          User Profile
+        </p>
+      </Link>
     </header>
   )
 }
