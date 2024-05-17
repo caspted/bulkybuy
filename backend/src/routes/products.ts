@@ -173,6 +173,23 @@ function productRoutes(app: Express) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
+
+  //User owned products
+  app.get("/api/user/:userId/products", async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params
+
+      const userOwnedProducts = await prisma.product.findMany({
+        where: {
+          id: parseInt(userId)
+        }
+      })
+
+      res.status(200).json(userOwnedProducts)
+    } catch {
+      res.status(500).json({ error: "Internal Server Error"})
+    }
+  })
 }
 
 export default productRoutes;

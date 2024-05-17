@@ -61,6 +61,13 @@ export default function Navbar() {
           </p>
         </Link>
       </div>
+      
+       <Link href="/users/:id">
+        <p className={`${firstPathSegment === "users" ? " text-black" : "text-gray-400"} `}>
+          User Profile
+        </p>
+      </Link>
+      
       <div className="flex gap-4 items-center">
         {username !== "" && <p> Hello {username} </p>}
         <Button onClick={() => logout()}> Logout </Button>

@@ -13,5 +13,6 @@ export type Product = {
   image_url: string;
   listed_at: Date;
   category: string;
-  fetchUrl?: string
+  fetchUrl?: string;
+  sold: boolean;
 }
