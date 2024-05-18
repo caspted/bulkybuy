@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { Button } from "../ui/button"
 import fetchUser from "@/utils/fetchUser"
 import { useEffect, useState } from "react"
@@ -10,6 +10,7 @@ export default function Navbar() {
   const pathname = usePathname()
   const firstPathSegment = pathname.split('/')[1]
   const router = useRouter()
+  const { id } = useParams()
   const [username, setUsername] = useState("")
 
   useEffect(() => {
@@ -60,13 +61,13 @@ export default function Navbar() {
             Your Products
           </p>
         </Link>
-      </div>
-      
-       <Link href="/users/:id">
+
+        <Link href={`/user/${id}`}>
         <p className={`${firstPathSegment === "users" ? " text-black" : "text-gray-400"} `}>
           User Profile
         </p>
       </Link>
+      </div>
       
       <div className="flex gap-4 items-center">
         {username !== "" && <p> Hello {username} </p>}
