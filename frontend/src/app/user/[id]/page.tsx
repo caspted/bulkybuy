@@ -5,7 +5,11 @@ import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableRow, TableHeader, TableHead, TableBody } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { User, Product } from "@/utils/types"
+import { User, Product, Wallet, Transaction } from "@/utils/types"
+import getUser from "@/utils/getUser";
+import getOwnProducts from "@/utils/getOwnProducts";
+import getWallet from "@/utils/getWallet";
+import getTransactions from "@/utils/getTransactions";
 
 
 export default function UserProfile() {
@@ -13,39 +17,54 @@ export default function UserProfile() {
 
   const [user, setUser] = useState<User | null>(null)
   const [product, setProduct] = useState<Product[]>([])
-  const [wallet, setWallet] = useState()
+  const [wallet, setWallet] = useState<Wallet>()
+  const [transaction, setTransaction] = useState<Transaction>()
 
   useEffect(() => {
     if (id) {
-      getUser(id as string)
+      fetchUser()
+      fetchProducts()
+      fetchWallet()
+      fetchTransaction()
     }
   }, [id])
 
-  const getUser = async (id: string) => {
+  const fetchUser = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${id}`)
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setUser(data)
+      const userData = await getUser()
+      setUser(userData)
     } catch (error) {
       console.error(error)
     }
 }
 
-  const getProducts = async (userId: string) => {
+  const fetchProducts = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${userId}/products`)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
-      setProduct(data)
+      const productData = await getOwnProducts()
+      setProduct(productData)
     } catch (error) {
       console.error(error)
     }
   }
+
+  const fetchWallet = async () => {
+    try {
+      const walletData = await getWallet();
+      setWallet(walletData);
+      } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const fetchTransaction = async () => {
+    try {
+      const transactionData = await getTransactions();
+      setTransaction(transactionData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 
   return (
     <div className="flex flex-row space-x-4 mx-4">
@@ -74,11 +93,11 @@ export default function UserProfile() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div>
-              <h1>Balance: $5500</h1>
+            <div key={wallet?.id}>
+              <h1>Balance: {wallet?.balance}</h1>
             </div>
-            <div className="my-8">
-              <h1>Latest Transaction: $1000</h1>
+            <div key={transaction?.id} className="my-8">
+              <h1>Latest Transaction: {transaction?.amount} </h1>
             </div>
             <div>
               <Button>

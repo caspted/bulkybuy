@@ -1,7 +1,7 @@
 import getUserInfo from "./getUserInfo";
 import { User } from "./types";
 
-export default async function fetchUser() : Promise<User> {
+export default async function getUser() : Promise<User> {
   const userId = Number(getUserInfo().id)
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}`, {
