@@ -16,3 +16,8 @@ export type Product = {
   fetchUrl?: string;
   sold: boolean;
 }
+
+export type Wallet = {
+  id: number;
+  balance: number;
+}

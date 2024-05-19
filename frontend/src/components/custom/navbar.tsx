@@ -3,7 +3,7 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation'
 import { useRouter, useParams } from 'next/navigation'
 import { Button } from "../ui/button"
-import fetchUser from "@/utils/fetchUser"
+import fetchUser from "@/utils/getUser"
 import { useEffect, useState } from "react"
 
 export default function Navbar() {

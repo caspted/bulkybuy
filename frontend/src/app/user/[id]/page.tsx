@@ -5,7 +5,10 @@ import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableRow, TableHeader, TableHead, TableBody } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { User, Product } from "@/utils/types"
+import { User, Product, Wallet } from "@/utils/types"
+import getUser from "@/utils/getUser";
+import getOwnProducts from "@/utils/getOwnProducts";
+import getWallet from "@/utils/getWallet";
 
 
 export default function UserProfile() {
@@ -13,39 +16,43 @@ export default function UserProfile() {
 
   const [user, setUser] = useState<User | null>(null)
   const [product, setProduct] = useState<Product[]>([])
-  const [wallet, setWallet] = useState()
+  const [wallet, setWallet] = useState<Wallet>()
 
   useEffect(() => {
     if (id) {
-      getUser(id as string)
+      fetchUser()
+      fetchProducts()
+      fetchWallet()
     }
   }, [id])
 
-  const getUser = async (id: string) => {
+  const fetchUser = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${id}`)
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      setUser(data)
+      const userData = await getUser()
+      setUser(userData)
     } catch (error) {
       console.error(error)
     }
 }
 
-  const getProducts = async (userId: string) => {
+  const fetchProducts = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/${userId}/products`)
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
-      setProduct(data)
+      const productData = await getOwnProducts()
+      setProduct(productData)
     } catch (error) {
       console.error(error)
     }
   }
+
+  const fetchWallet = async () => {
+    try {
+      const walletData = await getWallet();
+      setWallet(walletData);
+      } catch (error) {
+      console.error(error)
+    }
+  }
+
 
   return (
     <div className="flex flex-row space-x-4 mx-4">
@@ -73,9 +80,9 @@ export default function UserProfile() {
               Wallet Info
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent key={wallet?.id}>
             <div>
-              <h1>Balance: $5500</h1>
+              <h1>Balance: {wallet?.balance}</h1>
             </div>
             <div className="my-8">
               <h1>Latest Transaction: $1000</h1>
