@@ -21,3 +21,10 @@ export type Wallet = {
   id: number;
   balance: number;
 }
+
+export type Transaction = {
+  id: number,
+  type: string,
+  amount: number,
+  wallet: Wallet
+}

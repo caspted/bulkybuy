@@ -5,10 +5,11 @@ import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableRow, TableHeader, TableHead, TableBody } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { User, Product, Wallet } from "@/utils/types"
+import { User, Product, Wallet, Transaction } from "@/utils/types"
 import getUser from "@/utils/getUser";
 import getOwnProducts from "@/utils/getOwnProducts";
 import getWallet from "@/utils/getWallet";
+import getTransactions from "@/utils/getTransactions";
 
 
 export default function UserProfile() {
@@ -17,12 +18,14 @@ export default function UserProfile() {
   const [user, setUser] = useState<User | null>(null)
   const [product, setProduct] = useState<Product[]>([])
   const [wallet, setWallet] = useState<Wallet>()
+  const [transaction, setTransaction] = useState<Transaction>()
 
   useEffect(() => {
     if (id) {
       fetchUser()
       fetchProducts()
       fetchWallet()
+      fetchTransaction()
     }
   }, [id])
 
@@ -49,6 +52,15 @@ export default function UserProfile() {
       const walletData = await getWallet();
       setWallet(walletData);
       } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const fetchTransaction = async () => {
+    try {
+      const transactionData = await getTransactions();
+      setTransaction(transactionData)
+    } catch (error) {
       console.error(error)
     }
   }
@@ -80,12 +92,12 @@ export default function UserProfile() {
               Wallet Info
             </CardTitle>
           </CardHeader>
-          <CardContent key={wallet?.id}>
-            <div>
+          <CardContent>
+            <div key={wallet?.id}>
               <h1>Balance: {wallet?.balance}</h1>
             </div>
-            <div className="my-8">
-              <h1>Latest Transaction: $1000</h1>
+            <div key={transaction?.id} className="my-8">
+              <h1>Latest Transaction: {transaction?.amount} </h1>
             </div>
             <div>
               <Button>
