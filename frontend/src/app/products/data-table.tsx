@@ -35,7 +35,11 @@ import { columns } from "./columns"
 import getOwnProducts from "@/utils/getOwnProducts"
 import { Product } from "@/utils/types"
 
-export function DataTable() {
+interface dataTableProps {
+  data: Array<Product>
+}
+
+export function DataTable({data} : dataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -43,16 +47,7 @@ export function DataTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const [data, setData] = useState<Array<Product>>([])
   const router = useRouter()
-
-  useEffect(() => {
-    async function fetchProducts() {
-      const products = await getOwnProducts()
-      setData(products)
-    }
-    fetchProducts()
-  }, [])
 
   const table = useReactTable({
     data,
