@@ -52,7 +52,7 @@ function usersRoutes(app: Express) {
   app.put("/api/user/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { wallet, bids } = req.body;
+      const { name, email, password, wallet, bids } = req.body;
       const findUser = await prisma.user.findUnique({
         where: {
           id: parseInt(id),
@@ -66,6 +66,9 @@ function usersRoutes(app: Express) {
           id: parseInt(id),
         },
         data: {
+          name,
+          email,
+          password,
           wallet,
           bids,
         },
