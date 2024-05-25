@@ -13,7 +13,6 @@ export default async function Products({ params }: ProductsProps) {
   const productId = Number(params.id)
   const productData = await getProduct(productId)
   const imageUrl = await getImage(productData.image_url)
-  console.log(imageUrl)
 
   return (
     <main className="flex flex-col items-center bg-dot-black/[0.2] p-24 pt-16"
