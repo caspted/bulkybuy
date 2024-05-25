@@ -28,7 +28,6 @@ function productRoutes(app: Express) {
       const product = await prisma.product.findMany({
         where: { sellerId: parseInt(id) },
       });
-      console.log(product)
       if (!product) return res.status(404).json({ message: "Product not found" });
       res.status(200).json(product);
     } catch {
@@ -42,7 +41,6 @@ function productRoutes(app: Express) {
       const product = await prisma.product.findMany({
         where: { sellerId: { not: parseInt(id) } },
       });
-      console.log(product)
       if (!product) return res.status(404).json({ message: "Product not found" });
       res.status(200).json(product);
     } catch {
@@ -53,7 +51,6 @@ function productRoutes(app: Express) {
   app.post("/api/products", upload.single("image"), async (req: Request, res: Response) => {
     try {
       const { name, description, image_url, category, sellerId } = req.body;
-      console.log(image_url)
       const newProduct = await prisma.product.create({
         data: {
           name,
@@ -95,7 +92,6 @@ function productRoutes(app: Express) {
   app.get("/api/products/image/:name", async (req, res) => {
     try {
       const { name } = req.params;
-      console.log("name", name)
   
       if (!name) {
         return res.status(400).json({ error: "Missing 'name' parameter" });
