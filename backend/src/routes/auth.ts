@@ -1,9 +1,8 @@
 import { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../utils/prismaClient";
 import { compare, hash } from 'bcrypt';
 import generateAccessToken from '../utils/generateAccessToken';
 
-export const prisma = new PrismaClient();
 
 function authRoutes(app: Express) {
   app.post('/api/login', async (req: Request, res: Response) => {

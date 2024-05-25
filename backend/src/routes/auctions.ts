@@ -1,7 +1,5 @@
 import { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-
-export const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 function auctionsRoutes(app: Express) {
   //Auction API Routes

@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import createServer from "../src/utils/createServer";
-import { prisma } from "../src/routes/users";
+import prisma from "../src/utils/prismaClient";
 
 const app = createServer(); 
 
