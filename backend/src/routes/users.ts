@@ -1,7 +1,5 @@
 import { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-
-export const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 function usersRoutes(app: Express) {
   app.get("/api/user", async (req: Request, res: Response) => {

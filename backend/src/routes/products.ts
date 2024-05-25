@@ -1,10 +1,9 @@
 import { Express, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import multer from "multer";
 import sharp from "sharp";
 import crypto from "crypto";
 import { uploadFile, deleteFile, getObjectSignedUrl } from "../utils/s3Bucket";
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
