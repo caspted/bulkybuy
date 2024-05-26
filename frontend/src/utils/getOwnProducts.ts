@@ -12,14 +12,14 @@ export default async function getOwnProducts() : Promise<Product[]> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create product');
+      throw new Error('Failed to fetch products');
     }
 
     const data = await response.json();
     console.log(data)
     return data;
   } catch (error) {
-    console.error('Error creating product:', error);
+    console.error('Failed to fetch products:', error);
     throw error;
   }
 };

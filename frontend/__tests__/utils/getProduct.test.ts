@@ -1,7 +1,5 @@
-// getProduct.test.ts
 import getProduct from '../../src/utils/getProduct';
 import { Product } from '../../src/utils/types';
-import { Response } from 'node-fetch';
 
 global.fetch = jest.fn();
 
@@ -19,13 +17,15 @@ describe('getProduct', () => {
       image_url: 'https://example.com/mock-product.jpg',
       listed_at: new Date('2023-05-01'),
       category: 'Electronics',
+      sold: true,
     };
 
     // Mock the fetch response
-    const mockResponse = new Response(JSON.stringify(mockProduct), {
+    const mockResponse = {
+      ok: true,
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+      json: async () => mockProduct,
+    } as unknown as Response;
 
     // Spy on the global fetch function
     const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
@@ -48,17 +48,17 @@ describe('getProduct', () => {
     const mockProductId = 2;
 
     // Mock the fetch response with an error
-    const mockErrorResponse = new Response('Failed to fetch product', {
+    const mockErrorResponse = {
+      ok: false,
       status: 500,
       statusText: 'Internal Server Error',
-    });
+      json: async () => ({ message: 'Failed to fetch product' }),
+    } as unknown as Response;
 
     // Spy on the global fetch function
-    const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockErrorResponse)
+    const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockErrorResponse);
 
-    await expect(getProduct(mockProductId)).rejects.toThrow(
-      'Failed to fetch product'
-    );
+    await expect(getProduct(mockProductId)).rejects.toThrow('Failed to fetch product');
 
     expect(fetchSpy).toHaveBeenCalledWith(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${mockProductId}`,
