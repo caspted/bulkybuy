@@ -35,8 +35,6 @@ describe("given a couple of TRANSACTIONS in the database", () => {
       }
     });
 
-    console.log("User and Wallet created:", { user, wallet });
-
     await prisma.transaction.createMany({
       data: [
         {
@@ -53,8 +51,6 @@ describe("given a couple of TRANSACTIONS in the database", () => {
     });
 
     const response = await supertest(app).get("/api/transactions");
-
-    console.log("Transactions Response:", response.body);
 
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(2);
