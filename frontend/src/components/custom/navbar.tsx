@@ -5,12 +5,14 @@ import { useRouter, useParams } from 'next/navigation'
 import { Button } from "../ui/button"
 import fetchUser from "@/utils/getUser"
 import { useEffect, useState } from "react"
+import getUserInfo from "@/utils/getUserInfo"
 
 export default function Navbar() {
   const pathname = usePathname()
   const firstPathSegment = pathname.split('/')[1]
   const router = useRouter()
-  const { id } = useParams()
+  const userInfo = getUserInfo()
+  const id = userInfo?.id
   const [username, setUsername] = useState("")
 
   useEffect(() => {
