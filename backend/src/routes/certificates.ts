@@ -3,15 +3,19 @@ import prisma from "../utils/prismaClient";
 
 function certificatesRoutes(app: Express) {
   //Certificate API Routes
-  app.get("/api/certificate/userId", async (req: Request, res: Response) => {
+  app.get("/api/certificate/:userId", async (req: Request, res: Response) => {
     try {
       const { userId } = req.params;
 
-      const findCertificate = await prisma.certificate.findUnique({
+      const findCertificate = await prisma.certificate.findFirst({
         where: {
-          id: parseInt(userId),
+          userId: parseInt(userId),
         },
       });
+
+      if (!findCertificate) {
+        return res.status(404).json({ message: "Certificate not found" });
+      }
 
       res.status(200).json(findCertificate);
     } catch {
@@ -19,7 +23,7 @@ function certificatesRoutes(app: Express) {
     }
   });
 
-  app.post("/api/certificate/userId", async (req: Request, res: Response) => {
+  app.post("/api/certificate/:userId", async (req: Request, res: Response) => {
     try {
       const { type, image_url, info, user, userId } = req.body;
 
@@ -33,7 +37,7 @@ function certificatesRoutes(app: Express) {
         },
       });
 
-      res.status(200).json(newCertificate);
+      res.status(201).json(newCertificate);
     } catch {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -86,8 +90,10 @@ function certificatesRoutes(app: Express) {
           id: parseInt(id),
         },
       });
+
+      res.status(202).json({ message: "Certificate deleted successfully"});
     } catch {
-      res.status(502).json("Certificate deleted successfully");
+      res.status(502).json({ error: "Internal Server Error"})
     }
   });
 }
