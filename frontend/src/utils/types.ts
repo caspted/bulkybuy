@@ -19,6 +19,7 @@ export type Product = {
 
 export type Wallet = {
   id: number;
+  userId: number;
   balance: number;
 }
 
