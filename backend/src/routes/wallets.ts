@@ -7,9 +7,9 @@ function walletsRoutes(app: Express) {
     try {
       const { userId } = req.params;
 
-      const wallet = await prisma.wallet.findUnique({
+      const wallet = await prisma.wallet.findFirst({
         where: {
-          id: parseInt(userId),
+          userId: parseInt(userId),
         },
       });
 
@@ -20,28 +20,22 @@ function walletsRoutes(app: Express) {
     }
   });
 
-  app.post(
-    "/api/wallets/:userId/transactions",
-    async (req: Request, res: Response) => {
-      try {
-        const { balance, userId, user, transactions } = req.body;
+   app.post("/api/wallets", async (req: Request, res: Response) => {
+    try {
+      const { balance, userId } = req.body;
 
-        const newTransaction = await prisma.wallet.create({
-          data: {
-            balance,
-            userId,
-            user,
-            transactions,
-          },
-        });
+      const newWallet = await prisma.wallet.create({
+        data: {
+          balance,
+          userId,
+        },
+      });
 
-        res.status(201).json(newTransaction);
-      } catch {
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    },
-  );
-
+      res.status(201).json(newWallet);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 }
 
 export default walletsRoutes;
