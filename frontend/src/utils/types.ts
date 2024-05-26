@@ -28,3 +28,14 @@ export type Transaction = {
   amount: number,
   wallet: Wallet
 }
+
+export type Auction = {
+  id: number;
+  date_started: Date;
+  date_ends: Date;
+  minimum_bid: number;
+  bids: number;
+  status: string;
+  productId: number;
+  sellerId: number;
+}
