@@ -7,6 +7,7 @@ import certificatesRoutes from "../routes/certificates";
 import usersRoutes from "../routes/users";
 import walletsRoutes from "../routes/wallets";
 import productRoutes from "../routes/products";
+import transactionRoutes from "../routes/transactions";
 
 
 function createServer() {
@@ -20,7 +21,8 @@ function createServer() {
   certificatesRoutes(app);
   usersRoutes(app);
   walletsRoutes(app);
-  productRoutes(app)
+  productRoutes(app);
+  transactionRoutes(app);
 
   return app
 }
