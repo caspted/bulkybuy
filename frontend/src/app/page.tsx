@@ -7,6 +7,7 @@ import getAuctionProducts from "@/utils/getAuctionProducts";
 import getImage from "@/utils/getImage";
 import { Product } from "@/utils/types"
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([])
@@ -27,6 +28,7 @@ export default function Home() {
     }
     getProducts()
   }, [])
+  
   return (
     <main className="flex flex-col items-center bg-dot-black/[0.2] p-24 pt-16">
       <div className="flex flex-col px-16 w-4/5">
@@ -38,12 +40,14 @@ export default function Home() {
       <section className="mt-8 flex flex-col w-full">
         <BentoGrid className="max-w-4xl mx-auto w-full">
           {products.map((product, i) => (
-            <BentoGridItem
-              key={i}
-              title={product.name}
-              description={product.description}
-              header={product.fetchUrl && <Skeleton url={product.fetchUrl}/>}
-            />
+            <Link href={`./bid/${product.id}`} key={i}>
+              <BentoGridItem
+                key={i}
+                title={product.name}
+                description={product.description}
+                header={product.fetchUrl && <Skeleton url={product.fetchUrl} />}
+              />
+            </Link>
           ))}
         </BentoGrid>
         <PaginationUse pages={5} currentPage={1} />
@@ -52,16 +56,16 @@ export default function Home() {
   );
 }
 
-const Skeleton = ({url} : {url : string}) => (
+const Skeleton = ({ url }: { url: string }) => (
   <div className="relative w-full" style={{ paddingTop: '60%' }}>
-  <Image 
-    src={url} 
-    alt="Image from URL" 
-    layout="fill" 
-    objectFit="cover" 
-    className="rounded-xl" 
-  />
-</div>
+    <Image
+      src={url}
+      alt="Image from URL"
+      layout="fill"
+      objectFit="cover"
+      className="rounded-xl"
+    />
+  </div>
 )
 
 const words = [
