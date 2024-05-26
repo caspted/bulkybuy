@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import getProduct from "@/utils/getProduct";
 import getImage from "@/utils/getImage";
@@ -18,7 +19,9 @@ export default async function Products({ params }: ProductsProps) {
   return (
     <main className="flex flex-row bg-dot-black/[0.2]" style={{ height: "calc(100vh - 100px)" }}>
       <div className="pl-4 pt-4 w-1/5">
-        <Button>Back</Button>
+        <Button onClick={
+          () => window.history.back()
+        }>Back</Button>
       </div>
       <div className="flex flex-col items-center w-3/5 py-8">
         <div className="flex flex-col justify-between w-full">

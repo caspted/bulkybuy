@@ -4,7 +4,7 @@ import prisma from "../src/utils/prismaClient";
 
 const app = createServer()
 
-describe("Product Routes", () => {
+describe("given a couple of PRODUCTS in the database", () => {
 
   beforeEach(async () => {
     await prisma.product.deleteMany();
