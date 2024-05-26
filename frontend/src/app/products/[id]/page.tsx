@@ -3,7 +3,6 @@ import getProduct from "@/utils/getProduct";
 import getImage from "@/utils/getImage";
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation"
 
 interface ProductsProps {
   params: {

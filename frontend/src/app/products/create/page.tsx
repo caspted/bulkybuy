@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { CategorySelection } from "@/components/custom/categorySelection";
 import createProduct from "@/utils/createProduct";
+import { toast } from "sonner";
 
 export default function Products() {
   const [name, setName] = useState("")
@@ -68,7 +69,12 @@ export default function Products() {
             </form>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button className="w-full bg-black" onClick={() => createProduct(name, description, category, file)}>
+            <Button className="w-full bg-black" onClick={() => {
+              createProduct(name, description, category, file)
+              toast("Your product has been created", {
+                description: "You may now return to the products page to view your new product.",
+              })}
+            }>
               Create
             </Button>
           </CardFooter>
