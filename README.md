@@ -32,7 +32,7 @@ NEXT_PUBLIC_CLIENT_URL=http://localhost:3000
 Inside the .env for the "backend" directory, paste the following:
 
 ```bash
-DATABASE_URL="postgresql://postgres:PASSWORD:5432/DATABASE-NAME?schema=public"
+DATABASE_URL="postgresql://postgres:PASSWORD@localhost:5432/DATABASE-NAME?schema=public"
 BUCKET=bulkybuy1
 PORT=8080
 ```
