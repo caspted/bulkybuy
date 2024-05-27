@@ -11,7 +11,7 @@ describe('isValidEmail', () => {
     jest.resetAllMocks();
   });
 
-  test('valid email', () => {
+  it('valid email', () => {
     const validEmail = 'valid@email.com';
     validator.isEmail.mockReturnValue(true);
     const result = isValidEmail(validEmail);
@@ -19,7 +19,7 @@ describe('isValidEmail', () => {
     expect(result).toBe(true);
   });
 
-  test('invalid email', () => {
+  it('invalid email', () => {
     const invalidEmail = 'invalid';
     validator.isEmail.mockReturnValue(false);
     const result = isValidEmail(invalidEmail);

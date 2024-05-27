@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {useRouter} from "next/navigation";
+import createAuction from "@/utils/createAuction";
 
 interface ProductsProps {
   params: {
@@ -29,8 +31,6 @@ interface ProductsProps {
   };
 }
 
-import {useRouter} from "next/navigation";
-import createAuction from "@/utils/createAuction";
 export default function ProductAuction({ params }: ProductsProps) {
   const router = useRouter()
   const productId = Number(params.id)
@@ -61,7 +61,7 @@ export default function ProductAuction({ params }: ProductsProps) {
         <div className="flex flex-col justify-between w-full">
           <Card className="w-[500px] h-auto m-auto">
             <CardHeader>
-              <CardTitle>Create New Product</CardTitle>
+              <CardTitle>Auction Detials</CardTitle>
             </CardHeader>
             <CardContent>
               <form>

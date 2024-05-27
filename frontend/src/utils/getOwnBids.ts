@@ -1,8 +1,11 @@
-import { Auction } from "./types";
+import getUserInfo from "./getUserInfo";
+import { Bid } from "./types";
 
-export default async function getAuction(productId: number) : Promise<Auction[]> {
+export default async function getOwnBids() : Promise<Bid[]> {
+  const userId = Number(getUserInfo().id);
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/product/${productId}/auctioned-products`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${userId}/bids`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

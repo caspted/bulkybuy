@@ -33,7 +33,7 @@ describe('Product Creation', () => {
     await login(driver);
   });
 
-  it('should create a new product with valid input', async () => {
+  it('create a new product with valid input', async () => {
     await driver.get(`${rootURL}/products/create`);
 
     const nameInput = await driver.findElement(By.id('name'));
@@ -62,18 +62,4 @@ describe('Product Creation', () => {
     const currentUrl = await driver.getCurrentUrl();
     expect(currentUrl).toEqual(`${rootURL}/`);
   });
-
-  // it('should display an error for missing fields', async () => {
-  //   await driver.get(`${rootURL}/products/create`);
-
-  //   const createButton = await driver.findElement(By.css('button[class*="bg-black"]'));
-  //   await createButton.click();
-
-  //   // Wait for the error messages to appear
-  //   await driver.wait(async () => (await driver.findElements(By.css('.error-message'))).length > 0, 5000);
-
-  //   // Verify that the error messages are displayed
-  //   const errorMessages = await driver.findElements(By.css('.error-message'));
-  //   expect(errorMessages.length).toBeGreaterThan(0);
-  // });
 });

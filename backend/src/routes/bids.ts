@@ -12,6 +12,20 @@ function bidsRoutes(app: Express) {
     }
   });
 
+  app.get("/api/user/:id/bids", async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const bids = await prisma.bid.findMany({
+        where: {
+          userId: parseInt(id),
+        },
+      });
+      res.status(200).json(bids);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
   app.get("/api/bids/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -35,10 +49,7 @@ function bidsRoutes(app: Express) {
         req.body;
       const newBid = await prisma.bid.create({
         data: {
-          date_time,
           bid,
-          user,
-          auction,
           status,
           userId,
           auctionId,

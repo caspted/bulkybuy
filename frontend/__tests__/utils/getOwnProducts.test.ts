@@ -11,7 +11,7 @@ describe("getOwnProducts", () => {
     jest.resetAllMocks();
   });
 
-  test("should return own products data when API response is successful", async () => {
+  it("return own products; successful response", async () => {
     const mockSellerId = 123;
     const mockProducts: Product[] = [
       {
@@ -34,17 +34,14 @@ describe("getOwnProducts", () => {
       },
     ];
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockSellerId.toString() });
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       status: 200,
       json: async () => mockProducts,
     } as unknown as Response;
 
-    // Spy on the global fetch function
     const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
     const result = await getOwnProducts();
@@ -61,13 +58,11 @@ describe("getOwnProducts", () => {
     expect(result).toEqual(mockProducts);
   });
 
-  test("should throw an error when API response is unsuccessful", async () => {
+  it("throw error; unsuccessful response", async () => {
     const mockSellerId = 456;
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockSellerId.toString() });
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 500,
@@ -75,7 +70,6 @@ describe("getOwnProducts", () => {
       json: async () => ({ message: "Failed to fetch products" }),
     } as unknown as Response;
 
-    // Spy on the global fetch function
     const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockErrorResponse);
 
     await expect(getOwnProducts()).rejects.toThrow("Failed to fetch products");

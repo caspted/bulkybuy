@@ -38,7 +38,7 @@ interface DecodedToken {
 }
 
 describe('getUserInfo', () => {
-  test('should return decoded token', () => {
+  it('return decoded token', () => {
     const mockDecodedToken: DecodedToken = { userId: '123', email: 'user@example.com' };
     const mockToken = 'mock_token';
     
@@ -52,7 +52,7 @@ describe('getUserInfo', () => {
     expect(result).toEqual(mockDecodedToken);
   });
 
-  test('should return null if token is not found', () => {
+  it('return null; token is not found', () => {
     const jwtMock = require('jsonwebtoken');
     jwtMock.decode.mockReturnValue(null);
 

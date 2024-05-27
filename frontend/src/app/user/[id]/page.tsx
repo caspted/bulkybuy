@@ -4,8 +4,10 @@ import { useState, useEffect, FC } from "react"
 import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableRow, TableHeader, TableHead, TableBody } from "@/components/ui/table";
-import { User, Product, Wallet, Transaction } from "@/utils/types"
+import { Button } from "@/components/ui/button";
+import { User, Product, Wallet, Transaction, Bid } from "@/utils/types"
 import getUser from "@/utils/getUser";
+import getOwnBids from "@/utils/getOwnBids";
 import getOwnProducts from "@/utils/getOwnProducts";
 import getWallet from "@/utils/getWallet";
 import getTransactions from "@/utils/getTransactions";
@@ -16,11 +18,13 @@ import { AddMoneyDropdown } from "@/components/custom/addMoneyDropDown";
 
 export default function UserProfile() {
   const { id } = useParams()
+  const userId = Number(id)
 
   const [user, setUser] = useState<User | null>(null)
   const [product, setProduct] = useState<Product[]>([])
   const [wallet, setWallet] = useState<Wallet>()
   const [transaction, setTransaction] = useState<Transaction>()
+  const [bidData, setBidData] = useState<Bid[]>()
 
   useEffect(() => {
     if (id) {
@@ -28,6 +32,7 @@ export default function UserProfile() {
       fetchProducts()
       fetchWallet()
       fetchTransaction()
+      fetchBid()
     }
   }, [id])
 
@@ -81,6 +86,14 @@ export default function UserProfile() {
     }
   }
 
+  const fetchBid = async () => {
+    try {
+      const bidData = await getOwnBids();
+      setBidData(bidData)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="flex flex-row space-x-4 mx-4">
@@ -159,19 +172,19 @@ export default function UserProfile() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Auction</TableHead>
+                  <TableHead>Auction #</TableHead>
                   <TableHead>Your Bid</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {auctions.map(auctions => (
-                  <TableRow key={auctions.id}>
-                    <TableCell>{auctions.product}</TableCell>
-                    <TableCell>{auctions.bid}</TableCell>
-                    <TableCell>{auctions.status}</TableCell>
-                    <TableCell>{auctions.date}</TableCell>
+                {bidData && bidData.map(bids => (
+                  <TableRow key={bids.id}>
+                    <TableCell>{bids.auctionId}</TableCell>
+                    <TableCell>{bids.bid}</TableCell>
+                    <TableCell>{bids.status}</TableCell>
+                    <TableCell>{new Date(bids.date_time).toLocaleDateString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -182,39 +195,3 @@ export default function UserProfile() {
     </div>
   )
 }
-
-const auctions = [{
-  id: 1,
-  product: 'Macbook Pro',
-  bid: 1000,
-  status: 'Active',
-  date: '2021-08-01',
-},
-{
-  id: 2,
-  product: 'iPhone 12',
-  bid: 800,
-  status: 'Sold',
-  date: '2021-08-02',
-},
-{
-  id: 3,
-  product: 'iPad Pro',
-  bid: 600,
-  status: 'Active',
-  date: '2021-08-03',
-},
-{
-  id: 4,
-  product: 'Apple Watch',
-  bid: 400,
-  status: 'Sold',
-  date: '2021-08-04',
-},
-{
-  id: 5,
-  product: 'AirPods',
-  bid: 200,
-  status: 'Active',
-  date: '2021-08-05',
-}]
