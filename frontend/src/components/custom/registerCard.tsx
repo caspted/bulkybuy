@@ -78,7 +78,7 @@ export default function RegisterCard({ router } : RegisterCardProps) {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Username</Label>
+              <Label>Username</Label>
               <Input
                 id="name"
                 placeholder="Your username"
@@ -95,8 +95,8 @@ export default function RegisterCard({ router } : RegisterCardProps) {
                 className="focus-visible:ring-grey-400"
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {displayEmailInvalid && <p className="text-xs text-red-500 mr-1 my-2">Enter a valid email</p>}
-              {displayEmailInUse && <p className="text-xs text-red-500 mr-1 my-2">Email is already in use</p>}
+              {displayEmailInvalid && <p id="errorMessage" className="text-xs text-red-500 mr-1 my-2">Enter a valid email</p>}
+              {displayEmailInUse && <p id="errorMessage" className="text-xs text-red-500 mr-1 my-2">Email is already in use</p>}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
@@ -108,7 +108,7 @@ export default function RegisterCard({ router } : RegisterCardProps) {
                 className="focus-visible:ring-grey-400"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {displayEnterPassword && <p className="text-xs text-red-500 mr-1 my-2">Enter a password</p>}
+              {displayEnterPassword && <p id="errorMessage" className="text-xs text-red-500 mr-1 my-2">Enter a password</p>}
             </div>
           </div>
         </form>
@@ -123,7 +123,7 @@ export default function RegisterCard({ router } : RegisterCardProps) {
         </Link>
       </div>
       <CardFooter className="flex justify-between">
-        <Button className="w-full bg-black" onClick={() => handleSubmit()}>
+        <Button id="registerButton" className="w-full bg-black" onClick={() => handleSubmit()}>
           Create New Account
         </Button>
       </CardFooter>

@@ -75,7 +75,7 @@ export default function LoginCard({ router } : LoginCardProps) {
                 className="focus-visible:ring-grey-400"
                 onChange={(e) => setEmail(e.target.value)}
               />
-              {displayEmailInvalid && <p className="text-xs text-red-500 mr-1 my-2">Enter a valid email</p>}
+              {displayEmailInvalid && <p id="errorMessage" className="text-xs text-red-500 mr-1 my-2">Enter a valid email</p>}
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
@@ -86,12 +86,12 @@ export default function LoginCard({ router } : LoginCardProps) {
                 className="focus-visible:ring-grey-400"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {displayEnterPassword && <p className="text-xs text-red-500 mr-1 my-2">Enter your password</p>}
+              {displayEnterPassword && <p id="errorMessage" className="text-xs text-red-500 mr-1 my-2">Enter your password</p>}
             </div>
           </div>
         </form>
         <div className="w-full flex">
-          {incorrectCridentials && <p className="text-xs text-red-500 mx-auto mt-2">Password or username is incorrect</p>}
+          {incorrectCridentials && <p id="errorMessage" className="text-xs text-red-500 mx-auto mt-2">Password or username is incorrect</p>}
         </div>
       </CardContent>
       <div className="flex justify-center mb-2">
@@ -104,7 +104,7 @@ export default function LoginCard({ router } : LoginCardProps) {
         </Link>
       </div>
       <CardFooter className="flex flex-col justify-between">
-        <Button className="w-full bg-black" onClick={() => handleSubmit()}>
+        <Button id="loginButton" className="w-full bg-black" onClick={() => handleSubmit()}>
           Log In
         </Button>
       </CardFooter>
