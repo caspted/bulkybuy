@@ -1,8 +1,20 @@
 import { Builder, By, until, WebDriver } from 'selenium-webdriver';
+import axios from 'axios';
 
 const rootURL = process.env.NEXT_PUBLIC_CLIENT_URL;
 
 let driver: WebDriver;
+let createdProductName: string = "a very unique product"
+
+async function deleteProductByName(name: string) {
+  try {
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/name/${name}`);
+    console.log(response.data.message);
+  } catch (error) {
+    console.error('Error deleting product:', error);
+  }
+}
+
 
 async function login(driver: WebDriver) {
   await driver.get(`${rootURL}/login`);
@@ -26,6 +38,7 @@ describe('Product Creation', () => {
   });
 
   afterAll(async () => {
+    await deleteProductByName(createdProductName)
     await driver.quit();
   });
 
@@ -37,7 +50,7 @@ describe('Product Creation', () => {
     await driver.get(`${rootURL}/products/create`);
 
     const nameInput = await driver.findElement(By.id('name'));
-    await nameInput.sendKeys('Test Product');
+    await nameInput.sendKeys(createdProductName);
 
     const descriptionInput = await driver.findElement(By.id('productDescription'));
     await descriptionInput.sendKeys('This is a test product description');
@@ -57,9 +70,9 @@ describe('Product Creation', () => {
     const createButton = await driver.findElement(By.id('createButton'));
     await createButton.click();
 
-    await driver.wait(async () => (await driver.getCurrentUrl()) === `${rootURL}/`, 10000);
+    await driver.wait(async () => (await driver.getCurrentUrl()) === `${rootURL}/products`, 10000);
 
     const currentUrl = await driver.getCurrentUrl();
-    expect(currentUrl).toEqual(`${rootURL}/`);
+    expect(currentUrl).toEqual(`${rootURL}/products`);
   });
 });
