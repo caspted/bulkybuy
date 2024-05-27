@@ -11,17 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import {useRouter} from "next/navigation";
 import createAuction from "@/utils/createAuction";
 
@@ -41,10 +30,8 @@ export default function ProductAuction({ params }: ProductsProps) {
     try {
       await createAuction(date_ends, minimum_bid, productId);
       router.push('/products');
-      console.log("Auction created")
-      console.log(date_ends, minimum_bid, productId)
     } catch (error) {
-      console.error('Failed to create product', error);
+      console.error('Failed to create auction', error);
     }
   };
 
@@ -61,7 +48,7 @@ export default function ProductAuction({ params }: ProductsProps) {
         <div className="flex flex-col justify-between w-full">
           <Card className="w-[500px] h-auto m-auto">
             <CardHeader>
-              <CardTitle>Auction Detials</CardTitle>
+              <CardTitle>Create New Auction</CardTitle>
             </CardHeader>
             <CardContent>
               <form>
@@ -94,28 +81,9 @@ export default function ProductAuction({ params }: ProductsProps) {
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button className="w-full bg-black">Open for Auction</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => {handleCreateAuction()}}>
-                      Start Auction!
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <Button id="createAuction" className="w-full bg-black" onClick={() => {handleCreateAuction()}}>Open for Auction</Button>
             </CardFooter>
           </Card>
-
         </div>
       </div>
     </main>

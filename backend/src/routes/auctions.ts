@@ -87,6 +87,33 @@ function auctionsRoutes(app: Express) {
     }
   });
 
+  app.delete("/api/auctions/product/:productId", async (req: Request, res: Response) => {
+    try {
+      const { productId } = req.params;
+  
+      const findAuction = await prisma.auction.findFirst({
+        where: {
+          productId: parseInt(productId),
+        },
+      });
+  
+      if (!findAuction) {
+        return res.status(404).json({ message: "Auction not found for the product" });
+      }
+  
+      await prisma.auction.deleteMany({
+        where: {
+          productId: parseInt(productId),
+        },
+      });
+  
+      res.status(202).json({ message: "Auction(s) deleted successfully" });
+    } catch (error) {
+      console.error('Error deleting auction(s):', error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
   app.delete("/api/auctions/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

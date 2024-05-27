@@ -11,6 +11,9 @@ import getOwnBids from "@/utils/getOwnBids";
 import getOwnProducts from "@/utils/getOwnProducts";
 import getWallet from "@/utils/getWallet";
 import getTransactions from "@/utils/getTransactions";
+import { updateWalletBalance } from "@/utils/updateWalletBalance";
+import { createWallet } from "@/utils/createWallet";
+import { AddMoneyDropdown } from "@/components/custom/addMoneyDropDown";
 
 
 export default function UserProfile() {
@@ -57,6 +60,20 @@ export default function UserProfile() {
       setWallet(walletData);
       } catch (error) {
       console.error(error)
+    }
+  }
+
+  const addMoney = async (amount: number) => {
+    try {
+      if (wallet) {
+        const updatedWallet = await updateWalletBalance(wallet.userId, Number(wallet.balance) + Number(amount));
+        setWallet(updatedWallet);
+      } else if (user) {
+        const newWallet = await createWallet(user.id, amount);
+        setWallet(newWallet);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -108,9 +125,9 @@ export default function UserProfile() {
               <h1>Latest Transaction: {transaction?.amount} </h1>
             </div>
             <div>
-              <Button>
-                Add money
-              </Button>
+            <div>
+              <AddMoneyDropdown onAddMoney={addMoney} />
+            </div>
             </div>
           </CardContent>
         </Card>

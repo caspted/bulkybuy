@@ -1,10 +1,10 @@
 import getUserInfo from "./getUserInfo";
 import { Product } from "./types";
 
-export default async function getProductFromBid(bidId: number) : Promise<Product> {
+export default async function getProductFromBid(bidAuctionId: number) : Promise<Product> {
   const userId = Number(getUserInfo().id)
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/auction/${userId}/bid/${bidId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/auction/${userId}/bid/${bidAuctionId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

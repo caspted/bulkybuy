@@ -21,14 +21,16 @@ export default function Products({ params }: ProductsProps) {
   const router = useRouter()
   const productId = Number(params.id)
   const [productData, setProductData] = useState<Product>()
-  const [imageUrl, setImageUrl] = useState<ImageUrl>()
+  const [imageUrl, setImageUrl] = useState<ImageUrl | null>(null)
 
   useEffect(() => {
     async function loadData() {
       const productData = await getProduct(productId)
-      const imageUrl = await getImage(productData.image_url)
+      if (productData.image_url !== "") {
+        const imageUrl = await getImage(productData.image_url)
+        setImageUrl(imageUrl)
+      }
       setProductData(productData)
-      setImageUrl(imageUrl)
     }
     loadData()
   }, [productId])
@@ -43,17 +45,16 @@ export default function Products({ params }: ProductsProps) {
       <div className="flex flex-col items-center w-3/5 py-8">
         <div className="flex flex-col justify-between w-full">
           <div className="row-span-1 rounded-xl hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border justify-between flex flex-col space-y-4 mb-8">
+            {imageUrl &&
             <div className="relative w-full" style={{ paddingTop: '60%' }}>
-              {imageUrl &&
-                <Image
-                  src={imageUrl.imageUrl}
-                  alt="Image from URL"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-xl"
-                />
-              }
-            </div>
+              <Image
+                src={imageUrl.imageUrl}
+                alt="Image from URL"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-xl"
+              />
+            </div>}
             <div className="group-hover/bento:translate-x-2 transition duration-200">
               <div className="font-sans font-bold text-3xl text-neutral-600 dark:text-neutral-200 mb-2 mt-2">
                 {productData?.name}
