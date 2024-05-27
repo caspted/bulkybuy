@@ -3,20 +3,9 @@ import React, { useState, useEffect } from "react";
 import getProduct from "@/utils/getProduct";
 import getImage from "@/utils/getImage";
 import Image from 'next/image';
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Product } from "@/utils/types";
-import createAuction from "@/utils/createAuction";
 
 interface ProductsProps {
   params: {
@@ -29,11 +18,10 @@ type ImageUrl = {
 }
 
 export default function Products({ params }: ProductsProps) {
+  const router = useRouter()
   const productId = Number(params.id)
   const [productData, setProductData] = useState<Product>()
   const [imageUrl, setImageUrl] = useState<ImageUrl>()
-  const [date_ends, setDateEnds] = useState<Date>()
-  const [minimum_bid, setMinimumBid] = useState<number>()
 
   useEffect(() => {
     async function loadData() {
@@ -77,49 +65,9 @@ export default function Products({ params }: ProductsProps) {
                 {productData?.description}
               </div>
               <div className="mt-8">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="default">Start Auction</Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[500px]">
-                    <DialogHeader>
-                      <DialogTitle>Auction Details</DialogTitle>
-                      <DialogDescription>
-                        Please input the details of the auction. Once you confirm, the auction will start.
-                      </DialogDescription>
-                    </DialogHeader>
-                      <form>
-                        <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="date_ends" className="text-right">
-                              End Date:
-                            </Label>
-                            <Input
-                              id="date_ends"
-                              defaultValue={new Date().toISOString().split('T')[0]}
-                              className="col-span-3"
-                              type="date"
-                              onChange={(e) => setDateEnds(new Date(e.target.value))}
-                            />
-                          </div>
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="minimum_bid" className="text-right">
-                              Minimum Bid:
-                            </Label>
-                            <Input
-                              id="minimum_bid"
-                              defaultValue="100"
-                              className="col-span-3"
-                              type="number"
-                              onChange={(e) => setMinimumBid(Number(e.target.value))}
-                            />
-                          </div>
-                        </div>
-                      </form>
-                    <Button type="submit" onClick={() => {date_ends && minimum_bid && createAuction(date_ends, minimum_bid, productId)}}>Confirm Auction</Button>
-                  </DialogContent>
-                </Dialog>
-                {/* [Needs fixing] does not submit the form */}
+                <Button onClick={() => router.push(`/products/${productId}/auctionForm`)}>
+                  Start Auction
+                </Button>
               </div>
             </div>
           </div>
