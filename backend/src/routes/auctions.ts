@@ -23,6 +23,8 @@ function auctionsRoutes(app: Express) {
 
       if (!auction)
         return res.status(404).json({ message: "Auction not found" });
+
+      res.status(200).json(auction)
     } catch {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -63,7 +65,7 @@ function auctionsRoutes(app: Express) {
   app.put("/api/auctions/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { bids, status } = req.body;
+      const { bids, status, minimum_bid } = req.body;
 
       const findAuction = await prisma.auction.findUnique({
         where: {
@@ -81,6 +83,7 @@ function auctionsRoutes(app: Express) {
         data: {
           bids,
           status,
+          minimum_bid,
         },
       });
 
@@ -101,7 +104,7 @@ function auctionsRoutes(app: Express) {
       });
 
       if (!findAuction)
-        return res.status(404).json({ message: "Auction Not Found" });
+        return res.status(404).json({ message: "Auction not found" });
 
       await prisma.auction.delete({
         where: {
