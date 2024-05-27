@@ -40,3 +40,12 @@ export type Auction = {
   productId: number;
   sellerId: number;
 }
+
+export type Bid = {
+  id: number;
+  date_time: Date;
+  bid: number;
+  status: string;
+  userId: number;
+  auctionId: number;
+}
