@@ -18,13 +18,14 @@ export const AddMoneyDropdown: React.FC<AddMoneyDropdownProps> = ({ onAddMoney }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Add money</Button>
+        <Button id="addMoneyPopup">Add money</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="ml-6 w-48">
         <form onSubmit={handleSubmit} className="p-4">
           <label className="block mb-2">
             Amount:
             <input
+              id="amountInput"
               type="number"
               value={amount}
               onChange={(e) => setAmount(parseInt(e.target.value))}
@@ -33,7 +34,7 @@ export const AddMoneyDropdown: React.FC<AddMoneyDropdownProps> = ({ onAddMoney }
               min="0"
             />
           </label>
-          <Button type="submit">Add</Button>
+          <Button id="addConfirmation" type="submit">Add</Button>
         </form>
       </DropdownMenuContent>
     </DropdownMenu>
