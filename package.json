@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd frontend && npm test && cd ../backend && npm test",
+    "i-all": "npm i && cd frontend && npm i && cd ../backend && npm i",
     "start": "concurrently --kill-others \"cd frontend && npm run dev\" \"cd backend && npm run dev\""
   },
   "author": "",
