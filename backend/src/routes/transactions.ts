@@ -6,10 +6,10 @@ function transactionRoutes(app: Express) {
   app.get("/api/transactions", async (req: Request, res: Response) => {
     try {
       const transactions = await prisma.transaction.findMany()
-      if (!transactions) res.status(404).json({ message: "There are no trasanctions made"})
-      res.status(200).json(transactions)
+      if (!transactions) return res.status(404).json({ message: "There are no trasanctions made"})
+      return res.status(200).json(transactions)
     } catch {
-      res.status(500).json({ error: "Internat Server Error"})
+      return res.status(500).json({ error: "Internat Server Error"})
     }
   })
 
@@ -22,11 +22,11 @@ function transactionRoutes(app: Express) {
         }
       })
 
-      if (!userTransaction) res.status(404).json( { message: "Transaction not found"})
+      if (!userTransaction) return res.status(404).json( { message: "Transaction not found"})
 
-      res.status(200).json(userTransaction)
+      return res.status(200).json(userTransaction)
     } catch {
-      res.status(500).json({ error: "Internal Server Error"})
+      return res.status(500).json({ error: "Internal Server Error"})
     }
   })
 
@@ -41,9 +41,9 @@ function transactionRoutes(app: Express) {
         }
       })
 
-      res.status(201).json(newTransaction)
+      return res.status(201).json(newTransaction)
     } catch {
-      res.status(500).json({ error: "Internal Server Error"})
+      return res.status(500).json({ error: "Internal Server Error"})
     }
   })
 }
