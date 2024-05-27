@@ -27,7 +27,7 @@ export default function UserProfile() {
       fetchWallet()
       fetchTransaction()
     }
-  }, [])
+  }, [id])
 
   const fetchUser = async () => {
     try {
