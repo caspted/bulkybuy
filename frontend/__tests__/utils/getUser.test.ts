@@ -11,7 +11,7 @@ describe("getUser", () => {
     jest.resetAllMocks();
   });
 
-  test("should return user data when API response is successful", async () => {
+  it("return user data; successful response", async () => {
     const mockUserId = 123;
     const mockUser: User = {
       id: mockUserId,
@@ -21,10 +21,8 @@ describe("getUser", () => {
       password: "encryptedpassword"
     };
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockUserId.toString() });
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       status: 200,
@@ -46,13 +44,11 @@ describe("getUser", () => {
     expect(result).toEqual(mockUser);
   });
 
-  test("should throw an error when API response is unsuccessful", async () => {
+  it("throw error; unsuccessful response", async () => {
     const mockUserId = 456;
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockUserId.toString() });
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 500,

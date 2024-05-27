@@ -13,7 +13,7 @@ describe('Login Process', () => {
     await driver.quit();
   });
 
-  it('should login with valid credentials', async () => {
+  it('login with valid credentials', async () => {
     await driver.get(`${rootURL}/login`);
 
     const emailInput = await driver.findElement(By.id('email'));
@@ -28,11 +28,11 @@ describe('Login Process', () => {
     await driver.wait(until.urlContains('/'), 15000);
 
     const currentUrl = await driver.getCurrentUrl();
-    expect(currentUrl).toContain('http://localhost:3000/');
+    expect(currentUrl).toContain(`${rootURL}`);
   });
 
-  it('should display an error message for invalid email', async () => {
-    await driver.get('http://localhost:3000/login');
+  it('display an error message; invalid email', async () => {
+    await driver.get(`${rootURL}/login`);
 
     const emailInput = await driver.findElement(By.id('email'));
     await emailInput.sendKeys('invalidemail');

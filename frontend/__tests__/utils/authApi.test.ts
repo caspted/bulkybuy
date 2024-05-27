@@ -6,12 +6,11 @@ describe('login', () => {
     jest.resetAllMocks();
   });
 
-  test('should return a token when credentials are valid', async () => {
+  it('return a token when credentials are valid', async () => {
     const mockEmail = 'test@example.com';
     const mockPassword = 'password';
     const mockToken = 'mock-token';
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       status: 200,
@@ -34,11 +33,10 @@ describe('login', () => {
     expect(result).toBe(mockToken);
   });
 
-  test('should throw an error when credentials are invalid', async () => {
+  it('throw an error when credentials are invalid', async () => {
     const mockEmail = 'invalid@example.com';
     const mockPassword = 'wrongpassword';
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 401,
@@ -54,13 +52,12 @@ describe('register', () => {
     jest.resetAllMocks();
   });
 
-  test('should return a token when registration is successful', async () => {
+  it('return a token when registration is successful', async () => {
     const mockUsername = 'testuser';
     const mockEmail = 'test@example.com';
     const mockPassword = 'password';
     const mockToken = 'mock-token';
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       status: 201,
@@ -83,12 +80,11 @@ describe('register', () => {
     expect(result).toBe(mockToken);
   });
 
-  test('should throw an error when email is already in use', async () => {
+  it('throw an error when email is already in use', async () => {
     const mockUsername = 'testuser';
     const mockEmail = 'existing@example.com';
     const mockPassword = 'password';
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 409,
@@ -98,12 +94,11 @@ describe('register', () => {
     await expect(register(mockUsername, mockEmail, mockPassword)).rejects.toThrow('Email already in use');
   });
 
-  test('should throw an error when registration fails', async () => {
+  it('throw an error when registration fails', async () => {
     const mockUsername = 'testuser';
     const mockEmail = 'test@example.com';
     const mockPassword = 'password';
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 500,
