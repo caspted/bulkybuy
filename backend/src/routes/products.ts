@@ -38,8 +38,15 @@ function productRoutes(app: Express) {
   app.get("/api/products/auction/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const product = await prisma.product.findMany({
+      const auction = await prisma.auction.findMany({
         where: { sellerId: { not: parseInt(id) } },
+      });
+      const product = await prisma.product.findMany({
+        where: { 
+          id: {
+            in: auction.map(a => a.productId)
+          }
+         },
       });
       if (!product) return res.status(404).json({ message: "Product not found" });
       res.status(200).json(product);

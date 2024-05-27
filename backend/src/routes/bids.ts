@@ -35,10 +35,7 @@ function bidsRoutes(app: Express) {
         req.body;
       const newBid = await prisma.bid.create({
         data: {
-          date_time,
           bid,
-          user,
-          auction,
           status,
           userId,
           auctionId,

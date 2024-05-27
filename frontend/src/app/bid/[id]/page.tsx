@@ -1,13 +1,15 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import getProduct from "@/utils/getProduct";
+import getAuction from "@/utils/getAuction";
 import getImage from "@/utils/getImage";
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Product } from "@/utils/types";
-
+import { Product, Auction } from "@/utils/types";
+import createBid from "@/utils/createBid";
+import { useRouter } from "next/navigation";
 
 interface ProductsProps {
   params: {
@@ -19,11 +21,13 @@ type ImageUrl = {
   imageUrl: string
 }
 
-export default function Products({ params }: ProductsProps) {
+export default function BidForm({ params }: ProductsProps) {
+  const router = useRouter()
   const productId = Number(params.id)
   const [productData, setProductData] = useState<Product>()
   const [imageUrl, setImageUrl] = useState<ImageUrl>()
-  const [bid, setBid] = useState<number>()
+  const [bid, setBid] = useState<number>(0)
+  const [auctionData, setAuctionData] = useState<Auction>()
 
   useEffect(() => {
     async function loadData() {
@@ -31,9 +35,29 @@ export default function Products({ params }: ProductsProps) {
       const imageUrl = await getImage(productData.image_url)
       setProductData(productData)
       setImageUrl(imageUrl)
+  
+      getAuction(productId)
+        .then(auction => {
+          setAuctionData(auction[0])
+          if (auction) {
+            console.log(auction)
+            console.log(auction[0].id)
+          }
+        })
     }
     loadData()
   }, [productId])
+
+  const handleCreateBid = async () => {
+    try {
+      await createBid(bid, auctionData?.id ?? 0);
+      router.push('/products');
+      console.log("Auction created")
+      console.log(bid, auctionData?.id ?? 0)
+    } catch (error) {
+      console.error('Failed to create product', error);
+    }
+  };
 
   return (
     <main className="flex flex-row bg-dot-black/[0.2]" style={{ height: "calc(100vh - 100px)" }}>
@@ -47,7 +71,7 @@ export default function Products({ params }: ProductsProps) {
           <div className="row-span-1 rounded-xl hover:shadow-xl transition duration-200 shadow-input dark:shadow-none p-4 dark:bg-black dark:border-white/[0.2] bg-white border justify-between flex flex-col space-y-4 mb-8">
             <div>
               <div className="font-sans font-bold text-xl text-neutral-600 dark:text-neutral-200 mb-2">
-                Auction ends: 
+                Auction ends: {auctionData?.date_ends ? new Date(auctionData.date_ends).toLocaleDateString() : 'Unknown'}
                 {/* connect auction db table and display date_ends of auction here */}
               </div>
             </div>
@@ -73,7 +97,7 @@ export default function Products({ params }: ProductsProps) {
                 {productData?.description}
               </div>
               <div className="font-sans font-normal text-neutral-600 text-md mt-2 dark:text-neutral-300">
-                Minimum bid: 
+                Minimum bid: {String(auctionData?.minimum_bid)}
                 {/* display minimum bid from auction db table */}
               </div>
               <div className="font-sans font-bold text-xl text-neutral-600 dark:text-neutral-200 mt-8">
@@ -98,7 +122,7 @@ export default function Products({ params }: ProductsProps) {
                 </form>
               </div>
               <div className="mt-8">
-                <Button>Offer bid</Button>
+                <Button onClick={() => {handleCreateBid()}}>Offer bid</Button>
               </div>
             </div>
           </div>

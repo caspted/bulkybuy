@@ -111,6 +111,21 @@ function auctionsRoutes(app: Express) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   })
+
+  app.get("/api/product/:id/auctioned-products", async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const auction = await prisma.auction.findMany({
+        where: {
+          productId: parseInt(id),
+        },
+      });
+      if (!auction) return res.status(404).json({ message: "Auction not found" });
+      res.status(200).json(auction);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 }
 
 export default auctionsRoutes;
