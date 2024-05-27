@@ -31,11 +31,8 @@ function auctionsRoutes(app: Express) {
   app.post("/api/auctions", async (req: Request, res: Response) => {
     try {
       const {
-        product,
-        date_started,
         date_ends,
         minimum_bid,
-        bids,
         status,
         productId,
         sellerId,
@@ -43,11 +40,8 @@ function auctionsRoutes(app: Express) {
 
       const newAuction = await prisma.auction.create({
         data: {
-          product,
-          date_started,
           date_ends,
           minimum_bid,
-          bids,
           status,
           productId,
           sellerId,
