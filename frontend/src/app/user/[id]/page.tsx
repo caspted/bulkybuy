@@ -10,6 +10,7 @@ import getUser from "@/utils/getUser";
 import getOwnProducts from "@/utils/getOwnProducts";
 import getWallet from "@/utils/getWallet";
 import getTransactions from "@/utils/getTransactions";
+import { updateWalletBalance } from "@/utils/updateWalletBalance";
 
 
 export default function UserProfile() {
@@ -53,6 +54,18 @@ export default function UserProfile() {
       setWallet(walletData);
       } catch (error) {
       console.error(error)
+    }
+  }
+
+  const addMoney = async (amount: number) => {
+    try {
+      if (wallet) {
+        // Update wallet balance
+        const updatedWallet = await updateWalletBalance(wallet.userId, wallet.balance + amount);
+        setWallet(updatedWallet);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 

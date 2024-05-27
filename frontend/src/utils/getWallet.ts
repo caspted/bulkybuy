@@ -7,7 +7,7 @@ export default async function getWallet(): Promise<Wallet> {
   const userId = userInfo.id;
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/${userId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/wallets/${userId}`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
