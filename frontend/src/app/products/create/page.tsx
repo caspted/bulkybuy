@@ -24,8 +24,10 @@ import {
 } from "@/components/ui/alert-dialog"
 import { CategorySelection } from "@/components/custom/categorySelection";
 import createProduct from "@/utils/createProduct";
+import {useRouter} from "next/navigation";
 
 export default function Products() {
+  const router = useRouter()
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [category, setCategory] = useState("")
@@ -37,6 +39,16 @@ export default function Products() {
       setFile(file)
     }
   }
+
+  const handleCreateProduct = async () => {
+    try {
+      await createProduct(name, description, category, file);
+      router.push('/');
+    } catch (error) {
+      console.error('Failed to create product', error);
+    }
+  };
+
 
   return (
     <main className="flex flex-row bg-dot-black/[0.2]"
@@ -67,7 +79,7 @@ export default function Products() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="Product Description">Description</Label>
                     <Input
-                      id="Product Description"
+                      id="productDescription"
                       placeholder="Product Description"
                       className="focus-visible:ring-grey-400"
                       onChange={(e) => setDescription(e.target.value)}
@@ -78,14 +90,20 @@ export default function Products() {
                     <CategorySelection setCategory={setCategory}/>
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="email">Image</Label>
+                    <Label>Image</Label>
                     <input onChange={fileSelected} type="file" accept="image/*"></input>
                   </div>
                 </div>
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <AlertDialog>
+              <Button
+                className="w-full bg-black"
+                id="createButton"
+                onClick={() => {handleCreateProduct()}}>
+                Create
+              </Button>
+              {/* <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button className="w-full bg-black">Create</Button>
                 </AlertDialogTrigger>
@@ -103,7 +121,7 @@ export default function Products() {
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog>
+              </AlertDialog> */}
             </CardFooter>
           </Card>
 

@@ -51,6 +51,7 @@ export function CategorySelection({setCategory} : CategorySelectionProps) {
           <div className="max-h-[300px] overflow-y-auto">
             {filteredCategories.map((category) => (
               <div
+                id="category"
                 key={category.value}
                 className={cn(
                   "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none",
