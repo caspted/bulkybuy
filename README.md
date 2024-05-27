@@ -1,4 +1,4 @@
-# BSSE-2 2nd Semester Final Project
+# BSSE-2 2nd Semester Final Project: BulkyBuy
 ## Team No Name
 - Mykiell Pagayonan
 - Teddie John Rajeev
