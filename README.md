@@ -9,6 +9,12 @@
 To begin, install all the dependencies in the root, frontend, and backend directories with the following script:
 
 ```bash
+npm i-all
+```
+
+or
+
+```bash
 npm i
 
 cd frontend
@@ -71,8 +77,8 @@ This should run the dev script on both frontend and backend simultaneously using
 You can register a new user account by pressing the register button, or login with a given account with the following details:
 
 ```bash
-email: teddie@gmail.com
-password: hashedpassword
+email: test@email.com
+password: test
 ```
 
 ## Perform the tests using Jest
