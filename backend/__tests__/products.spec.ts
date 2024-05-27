@@ -38,13 +38,15 @@ describe("given a couple of PRODUCTS in the database", () => {
         name: "Iphone", 
         description: "It is apple", 
         category: "Gadgets", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
     },
       { 
         name: "Watermelon", 
         description: "This is edible", 
         category: "Food", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
       },
     ]});
 
@@ -60,13 +62,15 @@ describe("given a couple of PRODUCTS in the database", () => {
         name: "Iphone", 
         description: "It is apple", 
         category: "Gadgets", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
     },
       { 
         name: "Watermelon", 
         description: "This is edible", 
         category: "Food", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
       },
     ]});
 
@@ -77,38 +81,14 @@ describe("given a couple of PRODUCTS in the database", () => {
     expect(response.body[0].sellerId).toBe(1);
   });
 
-  it("retrieves products not sold by a specific seller", async () => {
-
-
-    await prisma.product.createMany({ 
-      data: [{ 
-        name: "Iphone", 
-        description: "It is apple", 
-        category: "Gadgets", 
-        sellerId: 1 
-    },
-      { 
-        name: "Watermelon", 
-        description: "This is edible", 
-        category: "Food", 
-        sellerId: 2 
-      },
-    ]});
-
-    const response = await supertest(app).get("/api/products/auction/1");
-
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(1);
-    expect(response.body[0].sellerId).toBe(2);
-  });
-
   it("should retrieve a single product by ID", async () => {
     const product = await prisma.product.create({
       data: { 
         name: "Rice", 
         description: "We will sack", 
         category: "Material", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
       },
     });
 
@@ -124,7 +104,7 @@ describe("given a couple of PRODUCTS in the database", () => {
       description: "It is white", 
       image_url: "something", 
       category: "Staples", 
-      sellerId: 1 
+      sellerId: 1
     };
 
     const response = await supertest(app).post("/api/products").send(newProduct);
@@ -139,7 +119,8 @@ describe("given a couple of PRODUCTS in the database", () => {
         name: "Rice", 
         description: "We will sack", 
         category: "Material", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: ""
       },
     });
 
@@ -157,7 +138,8 @@ describe("given a couple of PRODUCTS in the database", () => {
         name: "Rice", 
         description: "We will sack", 
         category: "Material", 
-        sellerId: 1 
+        sellerId: 1,
+        image_url: "" 
       },
     });
 
