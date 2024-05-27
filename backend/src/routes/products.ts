@@ -162,6 +162,24 @@ function productRoutes(app: Express) {
     }
   });
 
+  app.delete("/api/products/name/:productName", async (req: Request, res: Response) => {
+    try {
+      const { productName } = req.params;
+  
+      await prisma.product.deleteMany({
+        where: {
+          name: productName,
+        },
+      });
+  
+      res.status(202).json({ message: "Product deleted successfully" });
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  
+
   app.delete("/api/products/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
