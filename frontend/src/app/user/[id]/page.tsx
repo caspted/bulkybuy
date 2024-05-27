@@ -4,13 +4,14 @@ import { useState, useEffect, FC } from "react"
 import { useParams } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableCell, TableRow, TableHeader, TableHead, TableBody } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { User, Product, Wallet, Transaction } from "@/utils/types"
 import getUser from "@/utils/getUser";
 import getOwnProducts from "@/utils/getOwnProducts";
 import getWallet from "@/utils/getWallet";
 import getTransactions from "@/utils/getTransactions";
 import { updateWalletBalance } from "@/utils/updateWalletBalance";
+import { createWallet } from "@/utils/createWallet";
+import { AddMoneyDropdown } from "@/components/custom/addMoneyDropDown";
 
 
 export default function UserProfile() {
@@ -60,9 +61,11 @@ export default function UserProfile() {
   const addMoney = async (amount: number) => {
     try {
       if (wallet) {
-        // Update wallet balance
-        const updatedWallet = await updateWalletBalance(wallet.userId, wallet.balance + amount);
+        const updatedWallet = await updateWalletBalance(wallet.userId, Number(wallet.balance) + Number(amount));
         setWallet(updatedWallet);
+      } else if (user) {
+        const newWallet = await createWallet(user.id, amount);
+        setWallet(newWallet);
       }
     } catch (error) {
       console.error(error);
@@ -109,9 +112,9 @@ export default function UserProfile() {
               <h1>Latest Transaction: {transaction?.amount} </h1>
             </div>
             <div>
-              <Button>
-                Add money
-              </Button>
+            <div>
+              <AddMoneyDropdown onAddMoney={addMoney} />
+            </div>
             </div>
           </CardContent>
         </Card>
