@@ -20,10 +20,10 @@ export default async function createAuction (date_ends : Date, minimum_bid : num
     });
 
     if (!(response.status >= 200 && response.status < 300)) {
-      throw new Error('Failed to create product');
+      throw new Error('Failed to create auction');
     }
   } catch (error) {
-    console.error('Error creating product:', error);
+    console.error('Error creating auction:', error);
     throw error;
   }
 };

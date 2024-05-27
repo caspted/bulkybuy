@@ -61,7 +61,7 @@ export default function ProductAuction({ params }: ProductsProps) {
         <div className="flex flex-col justify-between w-full">
           <Card className="w-[500px] h-auto m-auto">
             <CardHeader>
-              <CardTitle>Create New Product</CardTitle>
+              <CardTitle>Auction Detials</CardTitle>
             </CardHeader>
             <CardContent>
               <form>
