@@ -34,7 +34,7 @@ export default function Home() {
     <main className="flex flex-col items-center bg-dot-black/[0.2] p-24 pt-16">
       <div className="flex flex-col px-16 w-4/5">
         <TypewriterEffectSmooth words={words} className="mx-auto" />
-        <p>
+        <p className="text-center">
         Welcome to BulkyBuy, the online platform for auctioning products in bulk lots. Sellers can list excess inventory to be auctioned off in desired quantities. Buyers can bid on amazing deals for bulk product lots across numerous categories. Our user-friendly interface streamlines the bulk auction process. Secure transactions protect all participants. Join our vibrant community of bulk buyers and sellers. Maximize your buying and selling potential with BulkyBuy&apos;s competitive bulk auctions. Register today and start your bulk auction journey!
         </p>
       </div>
