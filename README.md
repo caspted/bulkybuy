@@ -6,10 +6,16 @@
 
 ## Install all dependencies
 
-To begin, install all the dependencies in the root, frontend, and backend directories with this script:
+To begin, install all the dependencies in the root, frontend, and backend directories with the following script:
 
 ```bash
-npm run i-all
+npm i
+
+cd frontend
+npm i
+
+cd backend
+npm i
 ```
 
 ## Setting up the local database
