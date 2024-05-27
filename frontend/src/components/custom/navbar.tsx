@@ -22,7 +22,7 @@ export default function Navbar() {
       if (token) {
         const user = await fetchUser()
         setUsername(user.name)
-      } else {
+      } else if (!(firstPathSegment === "login" || firstPathSegment === "register")) {
         router.push("/login")
       }
     }

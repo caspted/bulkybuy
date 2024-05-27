@@ -78,6 +78,32 @@ function usersRoutes(app: Express) {
     }
   });
 
+  app.delete("/api/user/email/:email", async (req: Request, res: Response) => {
+    try {
+      const { email } = req.params;
+      const findUser = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+  
+      if (!findUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      await prisma.user.delete({
+        where: {
+          email,
+        },
+      });
+  
+      res.status(202).json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      res.status(502).json({ error: "Internal Server Error" });
+    }
+  });
+
   app.delete("/api/user/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
