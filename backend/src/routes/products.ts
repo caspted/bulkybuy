@@ -55,6 +55,24 @@ function productRoutes(app: Express) {
     }
   });
 
+  app.get("/api/products/auction/:id/bid/:bidauctionid", async (req: Request, res: Response) => {
+    try {
+      const { id, bidaucitonid } = req.params;
+      const auction = await prisma.auction.findUnique({
+        where: { id: parseInt(bidaucitonid) },
+      });
+      const product = await prisma.product.findUnique({
+        where: { 
+          id: auction?.productId
+         },
+      });
+      if (!product) return res.status(404).json({ message: "Product not found" });
+      res.status(200).json(product);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
   app.post("/api/products", upload.single("image"), async (req: Request, res: Response) => {
     try {
       const { name, description, image_url, category, sellerId } = req.body;

@@ -13,7 +13,7 @@ function walletsRoutes(app: Express) {
         },
       });
 
-      if (!wallet) return res.status(404).json({ message: "Wallet Not found" });
+      if (!wallet) return res.status(404).json({ message: "Wallet Not Found" });
       res.status(200).json(wallet);
     } catch {
       res.status(200).json({ error: "Internal Server Error" });
@@ -36,6 +36,34 @@ function walletsRoutes(app: Express) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
+
+  app.put("/api/wallets/:userId", async (req: Request, res: Response) => {
+    try {
+      const { userId } = req.params;
+      const { balance } = req.body;
+
+      const findWallet = await prisma.wallet.findUnique({
+        where: {
+          userId: parseInt(userId)
+        }
+      })
+
+      if (!findWallet) return res.status(404).json({ message: "Wallet Not Found"})
+
+      const updatedWalletBalance = await prisma.wallet.update({
+        where: {
+          userId: parseInt(userId)
+        },
+        data: {
+          balance: parseFloat(balance)
+        }
+      })
+
+      res.status(201).json(updatedWalletBalance)
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  })
 }
 
 export default walletsRoutes;
