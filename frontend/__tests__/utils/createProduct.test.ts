@@ -2,99 +2,94 @@ import getUserInfo from "../../src/utils/getUserInfo";
 import createProduct from "../../src/utils/createProduct";
 import axios from "axios";
 
-jest.mock("../../src/utils/getUserInfo");
-jest.mock("axios");
+jest.mock('axios');
+jest.mock('../../src/utils/getUserInfo', () => ({
+  __esModule: true,
+  default: () => ({ id: 'mockSellerId' }),
+}));
 
 global.fetch = jest.fn();
 
-describe("createProduct", () => {
+describe('createProduct', () => {
+  const mockFormData = new FormData();
+  mockFormData.append('image', 'mockImage' as unknown as Blob);
+
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
-  // test("should create a new product when API response is successful", async () => {
-  //   const mockSellerId = 123;
-  //   const mockProductName = "New Product";
-  //   const mockProductDescription = "This is a new product";
-  //   const mockProductCategory = "Electronics";
-  //   const mockImageFile = new File(["mock-image-data"], "mock-image.jpg", {
-  //     type: "image/jpeg",
-  //   });
-  //   const mockImageUrl = "https://example.com/mock-image.jpg";
+  it('create a product without image', async () => {
+    const mockResponse = { status: 200 };
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValueOnce(mockResponse as any);
 
-  //   // Mock the getUserInfo function
-  //   (getUserInfo as jest.Mock).mockReturnValue({ id: mockSellerId.toString() });
+    await createProduct('Product Name', 'Product Description', 'Category', null);
 
-  //   // Mock the axios.post response
-  //   const mockAxiosResponse = { data: { imageName: mockImageUrl } };
-  //   (axios.post as jest.Mock).mockResolvedValue(mockAxiosResponse);
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Product Name',
+          description: 'Product Description',
+          category: 'Category',
+          sellerId: 'mockSellerId',
+          image_url: '',
+        }),
+      }
+    );
+  });
 
-  //   // Mock the fetch response
-  //   const mockFetchResponse = { ok: true, status: 200 } as unknown as Response;
-  //   (global.fetch as jest.Mock).mockResolvedValue(mockFetchResponse);
+  it('throw an error; creating a product with an image fails', async () => {
+    const mockImageResponse = { data: { imageName: 'mockImageUrl' } };
+    (axios.post as jest.Mock).mockResolvedValueOnce(mockImageResponse);
 
-  //   await createProduct(
-  //     mockProductName,
-  //     mockProductDescription,
-  //     mockProductCategory,
-  //     mockImageFile
-  //   );
+    const mockFetchResponse = { status: 400 };
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValueOnce(mockFetchResponse as any);
 
-  //   expect(axios.post).toHaveBeenCalledWith(
-  //     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/image`,
-  //     expect.any(FormData),
-  //     { headers: { "Content-Type": "multipart/form-data" } }
-  //   );
+    await expect(createProduct('Product Name', 'Product Description', 'Category', mockFormData as unknown as File)).rejects.toThrow('Failed to create product');
 
-  //   expect(global.fetch).toHaveBeenCalledWith(
-  //     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`,
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         name: mockProductName,
-  //         description: mockProductDescription,
-  //         category: mockProductCategory,
-  //         sellerId: mockSellerId,
-  //         image_url: mockImageUrl,
-  //       }),
-  //     }
-  //   );
-  // });
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Product Name',
+          description: 'Product Description',
+          category: 'Category',
+          sellerId: 'mockSellerId',
+          image_url: 'mockImageUrl',
+        }),
+      }
+    );
+  });
 
-  test("should throw an error when API response is unsuccessful", async () => {
-    const mockSellerId = 456;
-    const mockProductName = "Error Product";
-    const mockProductDescription = "This is an error product";
-    const mockProductCategory = "Books";
-    const mockImageFile = new File(["mock-image-data"], "mock-image.jpg", {
-      type: "image/jpeg",
-    });
+  it('throw an error when creating a product without image fails', async () => {
+    const mockFetchResponse = { status: 400 };
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValueOnce(mockFetchResponse as any);
 
-    // Mock the getUserInfo function
-    (getUserInfo as jest.Mock).mockReturnValue({ id: mockSellerId.toString() });
+    await expect(createProduct('Product Name', 'Product Description', 'Category', null)).rejects.toThrow('Failed to create product');
 
-    // Mock the axios.post response
-    const mockAxiosResponse = { data: { imageName: "mock-image.jpg" } };
-    (axios.post as jest.Mock).mockResolvedValue(mockAxiosResponse);
-
-    // Mock the fetch response with an error
-    const mockErrorResponse = {
-      ok: false,
-      status: 500,
-      statusText: "Internal Server Error",
-    } as unknown as Response;
-    (global.fetch as jest.Mock).mockResolvedValue(mockErrorResponse);
-
-    await expect(
-      createProduct(
-        mockProductName,
-        mockProductDescription,
-        mockProductCategory,
-        mockImageFile
-      )
-    ).rejects.toThrow("Failed to create product");
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Product Name',
+          description: 'Product Description',
+          category: 'Category',
+          sellerId: 'mockSellerId',
+          image_url: '',
+        }),
+      }
+    );
   });
 });

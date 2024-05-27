@@ -11,7 +11,7 @@ describe("getTransactions", () => {
     jest.resetAllMocks();
   });
 
-  test("should return transactions when API response is successful", async () => {
+  it("return transactions; successful response", async () => {
     const mockUserId = 123;
     const mockTransactions: Transaction[] = [
       {
@@ -36,10 +36,8 @@ describe("getTransactions", () => {
       },
     ];
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockUserId.toString() });
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       json: async () => mockTransactions,
@@ -60,13 +58,11 @@ describe("getTransactions", () => {
     expect(result).toEqual(mockTransactions);
   });
 
-  test("should throw an error when API response is unsuccessful", async () => {
+  it("throw error; unsuccessful response", async () => {
     const mockUserId = 456;
 
-    // Mock the getUserInfo function
     (getUserInfo as jest.Mock).mockReturnValue({ id: mockUserId.toString() });
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 500,

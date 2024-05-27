@@ -17,11 +17,11 @@ describe('RegisterCard', () => {
     jest.clearAllMocks();
   });
 
-  it('should render without errors', () => {
+  it('renders', () => {
     render(<RegisterCard router={mockRouter} />);
   });
 
-  it('should display error messages for invalid input', async () => {
+  it('display error messages; invalid input', async () => {
     render(<RegisterCard router={mockRouter} />);
 
     fireEvent.click(screen.getByText('Create New Account'));
@@ -33,7 +33,7 @@ describe('RegisterCard', () => {
     });
   });
 
-  it('should call the register function with valid input', async () => {
+  it('register with valid input', async () => {
     const { register } = require('../../src/utils/authApi');
 
     render(<RegisterCard router={mockRouter} />);

@@ -23,7 +23,7 @@ describe('Registration Process', () => {
     await driver.quit();
   });
 
-  it('should register with valid credentials', async () => {
+  it('register with valid credentials', async () => {
     await driver.get(`${rootURL}/register`);
 
     const usernameInput = await driver.findElement(By.id('name'));
@@ -46,7 +46,7 @@ describe('Registration Process', () => {
     deleteUserByEmail(`valid@email.com`)
   });
 
-  it('should display an error message for invalid email', async () => {
+  it('display an error messag; invalid email', async () => {
     await driver.get(`${rootURL}/register`);
 
     const usernameInput = await driver.findElement(By.id('name'));
@@ -67,7 +67,7 @@ describe('Registration Process', () => {
     expect(errorMessage).toContain('Enter a valid email');
   });
 
-  it('should display an error message for email already in use', async () => {
+  it('display an error message; email already in use', async () => {
     await driver.get(`${rootURL}/register`);
 
     const usernameInput = await driver.findElement(By.id('name'));

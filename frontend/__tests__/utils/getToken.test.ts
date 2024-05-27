@@ -28,7 +28,7 @@ describe('getToken', () => {
     localStorageMock.clear();
   });
 
-  test('should return token from localStorage', () => {
+  it('return token', () => {
     const mockToken = 'mock_token';
     localStorageMock.setItem('token', mockToken);
 
@@ -37,7 +37,7 @@ describe('getToken', () => {
     expect(token).toBe(mockToken);
   });
 
-  test('should return null if token is not found in localStorage', () => {
+  it('return null; token is not found', () => {
     const token = getToken();
 
     expect(token).toBeNull();

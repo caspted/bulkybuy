@@ -8,7 +8,7 @@ describe('getProduct', () => {
     jest.resetAllMocks();
   });
 
-  test('should return product data when API response is successful', async () => {
+  it('return product data; successful response', async () => {
     const mockProductId = 1;
     const mockProduct: Product = {
       id: mockProductId,
@@ -20,14 +20,12 @@ describe('getProduct', () => {
       sold: true,
     };
 
-    // Mock the fetch response
     const mockResponse = {
       ok: true,
       status: 200,
       json: async () => mockProduct,
     } as unknown as Response;
 
-    // Spy on the global fetch function
     const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
 
     const result = await getProduct(mockProductId);
@@ -44,10 +42,9 @@ describe('getProduct', () => {
     expect(result).toEqual(mockProduct);
   });
 
-  test('should throw an error when API response is unsuccessful', async () => {
+  it('throw error; unsuccessful response', async () => {
     const mockProductId = 2;
 
-    // Mock the fetch response with an error
     const mockErrorResponse = {
       ok: false,
       status: 500,
@@ -55,7 +52,6 @@ describe('getProduct', () => {
       json: async () => ({ message: 'Failed to fetch product' }),
     } as unknown as Response;
 
-    // Spy on the global fetch function
     const fetchSpy = (global.fetch as jest.Mock).mockResolvedValue(mockErrorResponse);
 
     await expect(getProduct(mockProductId)).rejects.toThrow('Failed to fetch product');

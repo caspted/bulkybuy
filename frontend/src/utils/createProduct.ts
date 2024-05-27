@@ -5,9 +5,7 @@ export default async function createProduct (name : string, description : string
   const sellerId = getUserInfo().id
 
   if (!image) {
-    try {
-      const formData = new FormData();
-  
+    try {  
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`, {
         method: 'POST',
         headers: {
