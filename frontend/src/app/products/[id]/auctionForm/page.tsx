@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import {useRouter} from "next/navigation";
+import createAuction from "@/utils/createAuction";
 
 interface ProductsProps {
   params: {
@@ -29,8 +31,6 @@ interface ProductsProps {
   };
 }
 
-import {useRouter} from "next/navigation";
-import createAuction from "@/utils/createAuction";
 export default function ProductAuction({ params }: ProductsProps) {
   const router = useRouter()
   const productId = Number(params.id)
