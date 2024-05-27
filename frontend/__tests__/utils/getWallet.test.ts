@@ -30,7 +30,7 @@ describe("getWallet", () => {
     const result = await getWallet();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/wallet/${mockUserId}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/wallets/${mockUserId}`,
       {
         method: "GET",
         headers: {
