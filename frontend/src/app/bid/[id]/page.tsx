@@ -4,7 +4,10 @@ import getProduct from "@/utils/getProduct";
 import getImage from "@/utils/getImage";
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Product } from "@/utils/types";
+
 
 interface ProductsProps {
   params: {
@@ -20,6 +23,7 @@ export default function Products({ params }: ProductsProps) {
   const productId = Number(params.id)
   const [productData, setProductData] = useState<Product>()
   const [imageUrl, setImageUrl] = useState<ImageUrl>()
+  const [bid, setBid] = useState<number>()
 
   useEffect(() => {
     async function loadData() {
@@ -44,6 +48,7 @@ export default function Products({ params }: ProductsProps) {
             <div>
               <div className="font-sans font-bold text-xl text-neutral-600 dark:text-neutral-200 mb-2">
                 Auction ends: 
+                {/* connect auction db table and display date_ends of auction here */}
               </div>
             </div>
             <div className="relative w-full" style={{ paddingTop: '60%' }}>
@@ -67,8 +72,33 @@ export default function Products({ params }: ProductsProps) {
               <div className="font-sans font-normal text-neutral-600 text-md mt-2 dark:text-neutral-300">
                 {productData?.description}
               </div>
+              <div className="font-sans font-normal text-neutral-600 text-md mt-2 dark:text-neutral-300">
+                Minimum bid: 
+                {/* display minimum bid from auction db table */}
+              </div>
+              <div className="font-sans font-bold text-xl text-neutral-600 dark:text-neutral-200 mt-8">
+                Bid form:
+              </div>
+              <div>
+                <form>
+                  <div className="grid gap-4 py-2">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="bid" className="text-right">
+                        Your offer:
+                      </Label>
+                      <Input
+                        id="bid"
+                        defaultValue="100"
+                        className="col-span-3"
+                        type="number"
+                        onChange={(e) => setBid(Number(e.target.value))}
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
               <div className="mt-8">
-                <Button>Offer a bid</Button>
+                <Button>Offer bid</Button>
               </div>
             </div>
           </div>
