@@ -5,7 +5,31 @@ export default async function createProduct (name : string, description : string
   const sellerId = getUserInfo().id
 
   if (!image) {
-    return;
+    try {
+      const formData = new FormData();
+  
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          category,
+          sellerId,
+          image_url: "",
+        }),
+      });
+  
+      if (!(response.status >= 200 && response.status < 300)) {
+        throw new Error('Failed to create product');
+      }
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw error;
+    }
+    return
   }
 
   try {
