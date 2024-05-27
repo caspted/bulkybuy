@@ -119,6 +119,7 @@ export default function Products({ params }: ProductsProps) {
                     <Button type="submit" onClick={() => {date_ends && minimum_bid && createAuction(date_ends, minimum_bid, productId)}}>Confirm Auction</Button>
                   </DialogContent>
                 </Dialog>
+                {/* [Needs fixing] does not submit the form */}
               </div>
             </div>
           </div>
