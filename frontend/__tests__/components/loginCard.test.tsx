@@ -17,11 +17,11 @@ describe('LoginCard', () => {
     jest.clearAllMocks();
   });
 
-  it('should render without errors', () => {
+  it('renders', () => {
     render(<LoginCard router={mockRouter} />);
   });
 
-  it('should display error messages for invalid input', async () => {
+  it('display error messages; invalid input', async () => {
     render(<LoginCard router={mockRouter} />);
 
     fireEvent.click(screen.getByText('Log In'));
@@ -32,7 +32,7 @@ describe('LoginCard', () => {
     });
   });
 
-  it('should call the login function with valid input', async () => {
+  it('calls login function; valid input', async () => {
     const { login } = require('../../src/utils/authApi');
 
     render(<LoginCard router={mockRouter} />);
@@ -51,7 +51,7 @@ describe('LoginCard', () => {
     });
   });
 
-  it('should display incorrect credentials message on login error', async () => {
+  it('display incorrect credentials message; login error', async () => {
     const { login } = require('../../src/utils/authApi');
     login.mockRejectedValueOnce(new Error('Incorrect credentials'));
 

@@ -9,7 +9,7 @@ import getUserInfo from "@/utils/getUserInfo"
 
 export default function Navbar() {
   const pathname = usePathname()
-  const firstPathSegment = pathname.split('/')[1]
+  const firstPathSegment = pathname.split('/')[1] || ""
   const router = useRouter()
   const userInfo = getUserInfo()
   const id = userInfo?.id
