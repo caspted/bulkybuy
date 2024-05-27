@@ -1,20 +1,11 @@
 import getUserInfo from "./getUserInfo";
-import axios from "axios";
 
 export default async function createAuction (date_ends : Date, minimum_bid : number, productId: number) {
   const sellerId = getUserInfo().id
   const status = "Active"
 
   try {
-    const formData = new FormData();
-
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auctions`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auctions`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auctions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

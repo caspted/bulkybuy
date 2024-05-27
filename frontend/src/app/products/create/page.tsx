@@ -43,7 +43,7 @@ export default function Products() {
   const handleCreateProduct = async () => {
     try {
       await createProduct(name, description, category, file);
-      router.push('/');
+      router.push('/products');
     } catch (error) {
       console.error('Failed to create product', error);
     }
