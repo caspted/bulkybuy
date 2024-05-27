@@ -59,6 +59,38 @@ describe("given a couple of WALLETS in the database", () => {
     expect(response.body.userId).toBe(newWallet.userId);
   });
 
+  it("updates wallet balance", async () => {
+    const user = await prisma.user.create({
+      data: {
+        name: "John",
+        email: "john@gmail.com",
+        password: "tyehhgjj"
+      },
+    });
+
+    const initialBalance = 100.00;
+
+    const wallet = await prisma.wallet.create({
+      data: {
+        balance: initialBalance,
+        userId: user.id
+      }
+    });
+
+    const updatedBalance = 200.00;
+
+    const response = await supertest(app).put(`/api/wallets/${user.id}`).send({ balance: updatedBalance }).expect(201);
+
+    expect(response.body).toHaveProperty("id");
+    expect(response.body.userId).toBe(user.id);
+    expect(response.body.balance).toBe(updatedBalance.toString());
+
+    const updatedWallet = await prisma.wallet.findUnique({ where: { userId: user.id } });
+    expect(Number(updatedWallet?.balance)).toBe(updatedBalance);
+  });
+
+  //Failed Test
+
   it("returns 404 if wallet not found", async () => {
     const nonExistentUserId = 999;
 
@@ -66,7 +98,21 @@ describe("given a couple of WALLETS in the database", () => {
 
     expect(response.statusCode).toBe(404);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toBe("Wallet Not found");
+    expect(response.body.message).toBe("Wallet Not Found");
+  });
+
+  it("fails to update wallet balance if user ID does not exist", async () => {
+    const nonExistentUserId = 560; 
+
+    const updatedBalance = 200.00;
+
+    const response = await supertest(app).put(`/api/wallets/${nonExistentUserId}`).send({ balance: updatedBalance }).expect(404);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toBe("Wallet Not Found");
+
+    const existingWallet = await prisma.wallet.findUnique({ where: { userId: nonExistentUserId } });
+    expect(existingWallet).toBeNull();
   });
 
 });
