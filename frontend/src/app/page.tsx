@@ -5,9 +5,10 @@ import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import { PaginationUse } from "@/components/custom/paginationUse";
 import getAuctionProducts from "@/utils/getAuctionProducts";
 import getImage from "@/utils/getImage";
-import { Product } from "@/utils/types"
+import { Product, Auction } from "@/utils/types"
 import Image from "next/image";
 import Link from "next/link";
+
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([])

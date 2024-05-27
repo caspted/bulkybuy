@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import getProduct from "@/utils/getProduct";
 import getImage from "@/utils/getImage";
 import Image from 'next/image';
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button";
 import { Product } from "@/utils/types";
 
@@ -17,6 +18,7 @@ type ImageUrl = {
 }
 
 export default function Products({ params }: ProductsProps) {
+  const router = useRouter()
   const productId = Number(params.id)
   const [productData, setProductData] = useState<Product>()
   const [imageUrl, setImageUrl] = useState<ImageUrl>()
@@ -29,7 +31,7 @@ export default function Products({ params }: ProductsProps) {
       setImageUrl(imageUrl)
     }
     loadData()
-  }, [])
+  }, [productId])
 
   return (
     <main className="flex flex-row bg-dot-black/[0.2]" style={{ height: "calc(100vh - 100px)" }}>
@@ -63,7 +65,9 @@ export default function Products({ params }: ProductsProps) {
                 {productData?.description}
               </div>
               <div className="mt-8">
-                <Button>Start Auction</Button>
+                <Button onClick={() => router.push(`/products/${productId}/auctionForm`)}>
+                  Start Auction
+                </Button>
               </div>
             </div>
           </div>

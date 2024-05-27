@@ -68,24 +68,20 @@ export default function UserProfile() {
 
   return (
     <div className="flex flex-row space-x-4 mx-4">
-      <div className="flex w-1/3 mt-8 ">
-      <div className="w-full">
-      <Card key={user?.id}  className="shadow-lg">
-        <CardHeader>
-          <CardTitle>{user?.name}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="my-8">
-            <h1> {user?.email} </h1>
-          </div>
-          <div>
-            <h1> {user?.date_registered ? new Date(user.date_registered).toLocaleDateString() : 'N/A'} </h1>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-      </div>
-      <div className="flex flex-col w-2/3 mt-8 space-y-4">
+      <div className="flex flex-col w-1/3 mt-8 space-y-8 ">
+        <Card key={user?.id}  className="shadow-lg w-full">
+          <CardHeader>
+            <CardTitle>{user?.name}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="my-8">
+              <h1> {user?.email} </h1>
+            </div>
+            <div>
+              <h1> {user?.date_registered ? new Date(user.date_registered).toLocaleDateString() : 'N/A'} </h1>
+            </div>
+          </CardContent>
+        </Card>
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>
@@ -106,6 +102,8 @@ export default function UserProfile() {
             </div>
           </CardContent>
         </Card>
+      </div>
+      <div className="flex flex-col w-2/3 mt-8 space-y-8">
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>
@@ -135,7 +133,72 @@ export default function UserProfile() {
             </Table>
           </CardContent>
         </Card>
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle>
+              Your Bids
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Auction</TableHead>
+                  <TableHead>Your Bid</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {auctions.map(auctions => (
+                  <TableRow key={auctions.id}>
+                    <TableCell>{auctions.product}</TableCell>
+                    <TableCell>{auctions.bid}</TableCell>
+                    <TableCell>{auctions.status}</TableCell>
+                    <TableCell>{auctions.date}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
 }
+
+const auctions = [{
+  id: 1,
+  product: 'Macbook Pro',
+  bid: 1000,
+  status: 'Active',
+  date: '2021-08-01',
+},
+{
+  id: 2,
+  product: 'iPhone 12',
+  bid: 800,
+  status: 'Sold',
+  date: '2021-08-02',
+},
+{
+  id: 3,
+  product: 'iPad Pro',
+  bid: 600,
+  status: 'Active',
+  date: '2021-08-03',
+},
+{
+  id: 4,
+  product: 'Apple Watch',
+  bid: 400,
+  status: 'Sold',
+  date: '2021-08-04',
+},
+{
+  id: 5,
+  product: 'AirPods',
+  bid: 200,
+  status: 'Active',
+  date: '2021-08-05',
+}]

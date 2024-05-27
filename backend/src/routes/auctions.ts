@@ -23,6 +23,8 @@ function auctionsRoutes(app: Express) {
 
       if (!auction)
         return res.status(404).json({ message: "Auction not found" });
+
+      res.status(200).json(auction)
     } catch {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -31,11 +33,8 @@ function auctionsRoutes(app: Express) {
   app.post("/api/auctions", async (req: Request, res: Response) => {
     try {
       const {
-        product,
-        date_started,
         date_ends,
         minimum_bid,
-        bids,
         status,
         productId,
         sellerId,
@@ -43,11 +42,8 @@ function auctionsRoutes(app: Express) {
 
       const newAuction = await prisma.auction.create({
         data: {
-          product,
-          date_started,
           date_ends,
           minimum_bid,
-          bids,
           status,
           productId,
           sellerId,
@@ -63,7 +59,7 @@ function auctionsRoutes(app: Express) {
   app.put("/api/auctions/:id", async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { bids, status } = req.body;
+      const { bids, status, minimum_bid } = req.body;
 
       const findAuction = await prisma.auction.findUnique({
         where: {
@@ -81,6 +77,7 @@ function auctionsRoutes(app: Express) {
         data: {
           bids,
           status,
+          minimum_bid,
         },
       });
 
@@ -101,7 +98,7 @@ function auctionsRoutes(app: Express) {
       });
 
       if (!findAuction)
-        return res.status(404).json({ message: "Auction Not Found" });
+        return res.status(404).json({ message: "Auction not found" });
 
       await prisma.auction.delete({
         where: {
@@ -114,6 +111,21 @@ function auctionsRoutes(app: Express) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   })
+
+  app.get("/api/product/:id/auctioned-products", async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const auction = await prisma.auction.findMany({
+        where: {
+          productId: parseInt(id),
+        },
+      });
+      if (!auction) return res.status(404).json({ message: "Auction not found" });
+      res.status(200).json(auction);
+    } catch {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 }
 
 export default auctionsRoutes;

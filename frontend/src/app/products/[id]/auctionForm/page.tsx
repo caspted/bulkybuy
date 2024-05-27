@@ -22,28 +22,27 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { CategorySelection } from "@/components/custom/categorySelection";
-import createProduct from "@/utils/createProduct";
 import {useRouter} from "next/navigation";
+import createAuction from "@/utils/createAuction";
 
-export default function Products() {
+interface ProductsProps {
+  params: {
+    id: string;
+  };
+}
+
+export default function ProductAuction({ params }: ProductsProps) {
   const router = useRouter()
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [category, setCategory] = useState("")
-  const [file, setFile] = useState<File | null>(null)
+  const productId = Number(params.id)
+  const [date_ends, setDateEnds] = useState<Date>(new Date())
+  const [minimum_bid, setMinimumBid] = useState<number>(100)
 
-  const fileSelected = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      setFile(file)
-    }
-  }
-
-  const handleCreateProduct = async () => {
+  const handleCreateAuction = async () => {
     try {
-      await createProduct(name, description, category, file);
+      await createAuction(date_ends, minimum_bid, productId);
       router.push('/products');
+      console.log("Auction created")
+      console.log(date_ends, minimum_bid, productId)
     } catch (error) {
       console.error('Failed to create product', error);
     }
@@ -66,46 +65,38 @@ export default function Products() {
             </CardHeader>
             <CardContent>
               <form>
-                <div className="grid w-full items-center gap-4">
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="name">Name</Label>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="date_ends" className="text-right">
+                      End Date:
+                    </Label>
                     <Input
-                      id="name"
-                      placeholder="Product Name"
-                      className="focus-visible:ring-grey-400"
-                      onChange={(e) => setName(e.target.value)}
+                      id="date_ends"
+                      defaultValue={new Date().toISOString().split('T')[0]}
+                      className="col-span-3"
+                      type="Date"
+                      onChange={(e) => setDateEnds(new Date(e.target.value))}
                     />
                   </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="Product Description">Description</Label>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="minimum_bid" className="text-right">
+                      Minimum Bid:
+                    </Label>
                     <Input
-                      id="productDescription"
-                      placeholder="Product Description"
-                      className="focus-visible:ring-grey-400"
-                      onChange={(e) => setDescription(e.target.value)}
+                      id="minimum_bid"
+                      defaultValue="100"
+                      className="col-span-3"
+                      type="number"
+                      onChange={(e) => setMinimumBid(Number(e.target.value))}
                     />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="Category">Category</Label>
-                    <CategorySelection setCategory={setCategory}/>
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
-                    <Label>Image</Label>
-                    <input onChange={fileSelected} type="file" accept="image/*"></input>
                   </div>
                 </div>
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button
-                className="w-full bg-black"
-                id="createButton"
-                onClick={() => {handleCreateProduct()}}>
-                Create
-              </Button>
-              {/* <AlertDialog>
+              <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button className="w-full bg-black">Create</Button>
+                  <Button className="w-full bg-black">Open for Auction</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -116,12 +107,12 @@ export default function Products() {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => {createProduct(name, description, category, file)}}>
-                      Create!
+                    <AlertDialogAction onClick={() => {handleCreateAuction()}}>
+                      Start Auction!
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog> */}
+              </AlertDialog>
             </CardFooter>
           </Card>
 
