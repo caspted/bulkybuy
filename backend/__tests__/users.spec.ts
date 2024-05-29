@@ -7,11 +7,23 @@ const app = createServer();
 describe("given a couple of USERS in the database", () => {
 
   beforeEach(async () => {
-    await prisma.user.deleteMany()
+    await prisma.user.deleteMany({
+      where: {
+        id: {
+          not: 1
+        }
+      }
+    })
   })
 
   afterAll(async () => {
-    await prisma.user.deleteMany()
+    await prisma.user.deleteMany({
+      where: {
+        id: {
+          not: 1
+        }
+      }
+    });
   })
 
   it("read or return all users", async () => {
